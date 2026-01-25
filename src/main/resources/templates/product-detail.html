@@ -2,86 +2,268 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    font-size: 13px;
-    }
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title th:text="${product.name + ' | CANIFA'}">Chi tiết sản phẩm | CANIFA</title>
+    <style>
+        .product-detail {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .feature-icon {
-    font-size: 20px;
-    }
+        .product-detail .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            margin-bottom: 25px;
+            color: #666;
+        }
 
-    .product-description {
-    margin-bottom: 30px;
-    }
+        .product-detail .breadcrumb a:hover {
+            color: #DA291C;
+        }
 
-    .desc-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    }
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
 
-    .desc-content {
-    font-size: 14px;
-    line-height: 1.8;
-    color: #555;
-    }
+        .product-gallery .main-image {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
 
-    .related-section {
-    margin-top: 60px;
-    }
+        .product-gallery .main-image img {
+            width: 100%;
+            height: auto;
+        }
 
-    .section-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    }
+        .thumbnail-list {
+            display: flex;
+            gap: 10px;
+        }
 
-    .related-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    }
+        .thumbnail {
+            width: 80px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
 
-    @media (max-width: 900px) {
-    .product-container {
-    grid-template-columns: 1fr;
-    }
+        .thumbnail.active,
+        .thumbnail:hover {
+            border-color: #DA291C;
+        }
 
-    .related-grid {
-    grid-template-columns: repeat(2, 1fr);
-    }
-    }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .product-sku {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stars {
+            color: #f5a623;
+        }
+
+        .rating-count {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .product-price-section {
+            margin-bottom: 25px;
+        }
+
+        .current-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #DA291C;
+        }
+
+        .variant-section {
+            margin-bottom: 20px;
+        }
+
+        .variant-title {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .size-guide {
+            color: #DA291C;
+            font-size: 13px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .color-options,
+        .size-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-btn.active {
+            border-color: #333;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+        }
+
+        .size-btn {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .size-btn.active {
+            border-color: #DA291C;
+            color: #DA291C;
+        }
+
+        .size-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .quantity-section {
+            margin-bottom: 25px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            padding: 15px;
+            background: #DA291C;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-add-cart:hover {
+            background: #b52218;
+        }
+
+        .btn-wishlist {
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-wishlist:hover {
+            border-color: #DA291C;
+            color: #DA291C;
+        }
+
+        .product-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+        }
+
+        .product-description {
+            margin-bottom: 30px;
+        }
+
+        .desc-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .desc-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .related-section {
+            margin-top: 60px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="top-banner">
-        <div class="container"><a href="#" class="promo-link"><span class="promo-text">CANIFA SHOPPING DAYS</span><span
-                    class="promo-divider">|</span><span>GIẢM TỚI 50%</span></a></div>
-    </div>
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content"><a th:href="@{/}" class="logo"><img
-                        th:src="@{https://canifa.com/assets/images/logo.svg}" alt="CANIFA"></a>
-                <div class="search-bar"><input type="text" placeholder="Tìm kiếm" class="search-input"><button
-                        class="search-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="m21 21-4.35-4.35" />
-                        </svg></button></div>
-                <div class="header-icons"><a href="profile.html" class="header-icon-link" id="loginBtn"><svg width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                        </svg><span>Tài khoản</span></a><a href="cart.html" class="header-icon-link cart-link"><svg
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5">
-                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                            <line x1="3" y1="6" x2="21" y2="6" />
-                            <path d="M16 10a4 4 0 0 1-8 0" />
-                        </svg><span>Giỏ hàng</span><span class="cart-count" id="cartCount">0</span></a></div>
-            </div>
-        </div>
-    </header>
+    <div th:replace="~{fragments/header :: header}"></div>
 
     <div class="product-detail">
         <div class="breadcrumb"><a href="index.html">Trang chủ</a><span>›</span><a
