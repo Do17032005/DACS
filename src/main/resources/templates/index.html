@@ -1,0 +1,546 @@
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Hero Banner Slider -->
+    <section class="hero-section">
+        <div class="hero-slider swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="hero-banner" style="background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);">
+                            <div class="hero-content">
+                                <div class="hero-left">
+                                    <h2 class="hero-title">LỄ HỘI MUA SẮM</h2>
+                                    <p class="hero-subtitle">CANIFA SHOPPING DAYS</p>
+                                </div>
+                                <div class="hero-center">
+                                    <span class="hero-discount-label">Giảm tới</span>
+                                    <span class="hero-discount">50<span class="percent">%</span></span>
+                                </div>
+                                <div class="hero-right">
+                                    <h3 class="hero-deal">ĐẶC BIỆT</h3>
+                                    <p class="hero-deal-text">MUA 2 NHẬN 3</p>
+                                    <p class="hero-deal-sub">Hàng ngàn sản phẩm hấp dẫn</p>
+                                    <p class="hero-date">Online: 14/1 - 25/1</p>
+                                    <p class="hero-date">Hệ thống: 16/1 - 25/1</p>
+                                    <a href="#" class="hero-btn">Mua ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Voucher Section -->
+    <section class="voucher-section">
+        <div class="container">
+            <div class="voucher-slider swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="voucher-card">
+                            <div class="voucher-left">
+                                <span class="voucher-discount">30%</span>
+                            </div>
+                            <div class="voucher-right">
+                                <p class="voucher-title">Giảm 30%</p>
+                                <p class="voucher-desc">Đơn từ 899K</p>
+                                <button class="voucher-btn">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="voucher-card">
+                            <div class="voucher-left">
+                                <span class="voucher-discount">50%</span>
+                            </div>
+                            <div class="voucher-right">
+                                <p class="voucher-title">Giảm 50%</p>
+                                <p class="voucher-desc">Đơn từ 1.499K</p>
+                                <button class="voucher-btn">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="voucher-card special">
+                            <div class="voucher-left">
+                                <span class="voucher-discount">30%</span>
+                            </div>
+                            <div class="voucher-right">
+                                <p class="voucher-title">Giảm 30%</p>
+                                <p class="voucher-desc">Đơn từ 599K</p>
+                                <button class="voucher-btn">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="voucher-card">
+                            <div class="voucher-left">
+                                <span class="voucher-discount">50%</span>
+                            </div>
+                            <div class="voucher-right">
+                                <p class="voucher-title">Freeship</p>
+                                <p class="voucher-desc">Đơn từ 499K</p>
+                                <button class="voucher-btn">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">SẢN PHẨM MỚI</h2>
+                <div class="section-tabs">
+                    <button class="tab-btn active" data-tab="nu">Nữ</button>
+                    <button class="tab-btn" data-tab="nam">Nam</button>
+                    <button class="tab-btn" data-tab="treem">Trẻ em</button>
+                </div>
+            </div>
+
+            <div class="products-slider swiper">
+                <div class="swiper-wrapper">
+                    <!-- Dynamic Product Cards -->
+                    <div class="swiper-slide" th:each="product : ${products}">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <span class="product-badge sale">-30%</span>
+                                <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                                <div class="product-actions">
+                                    <button class="action-btn wishlist">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path
+                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <a th:href="@{'/product/' + ${product.id}}" class="action-btn quick-view">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-name" th:text="${product.name}">Tên sản phẩm</h3>
+                                <div class="product-price">
+                                    <span class="price-sale"
+                                        th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}">299,000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Banners -->
+    <section class="category-banners">
+        <div class="container">
+            <div class="banner-grid">
+                <a href="#" class="banner-item large">
+                    <img src="https://media.canifa.com/Simiconnector/banner_woman_jacket.webp" alt="Áo khoác nữ">
+                    <div class="banner-overlay">
+                        <h3>ÁO KHOÁC NỮ</h3>
+                        <span class="banner-cta">Xem ngay →</span>
+                    </div>
+                </a>
+                <a href="#" class="banner-item">
+                    <img src="https://media.canifa.com/Simiconnector/banner_woman_sweater.webp" alt="Áo len nữ">
+                    <div class="banner-overlay">
+                        <h3>ÁO LEN NỮ</h3>
+                        <span class="banner-cta">Xem ngay →</span>
+                    </div>
+                </a>
+                <a href="#" class="banner-item">
+                    <img src="https://media.canifa.com/Simiconnector/banner_homewear.webp" alt="Đồ mặc nhà">
+                    <div class="banner-overlay">
+                        <h3>ĐỒ MẶC NHÀ</h3>
+                        <span class="banner-cta">Xem ngay →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Men's Category Banners -->
+    <section class="category-banners">
+        <div class="container">
+            <div class="banner-grid reverse">
+                <a href="#" class="banner-item">
+                    <img src="https://media.canifa.com/Simiconnector/banner_man_jacket.webp" alt="Áo khoác nam">
+                    <div class="banner-overlay">
+                        <h3>ÁO KHOÁC NAM</h3>
+                        <span class="banner-cta">Xem ngay →</span>
+                    </div>
+                </a>
+                <a href="#" class="banner-item">
+                    <img src="https://media.canifa.com/Simiconnector/banner_man_sweater.webp" alt="Áo len nam">
+                    <div class="banner-overlay">
+                        <h3>ÁO LEN NAM</h3>
+                        <span class="banner-cta">Xem ngay →</span>
+                    </div>
+                </a>
+                <a href="#" class="banner-item large">
+                    <img src="https://media.canifa.com/Simiconnector/banner_man_homewear.webp" alt="Đồ mặc nhà nam">
+                    <div class="banner-overlay">
+                        <h3>ĐỒ MẶC NHÀ NAM</h3>
+                        <span class="banner-cta">Xem ngay →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Collections -->
+    <section class="collections-section">
+        <div class="container">
+            <h2 class="section-title">BỘ SƯU TẬP ĐẶC BIỆT</h2>
+            <div class="collections-grid">
+                <a href="#" class="collection-item">
+                    <img src="https://media.canifa.com/Simiconnector/bst_disney.webp" alt="BST Disney">
+                    <div class="collection-info">
+                        <span class="collection-name">Disney Collection</span>
+                    </div>
+                </a>
+                <a href="#" class="collection-item">
+                    <img src="https://media.canifa.com/Simiconnector/bst_doraemon.webp" alt="BST Doraemon">
+                    <div class="collection-info">
+                        <span class="collection-name">Doraemon Collection</span>
+                    </div>
+                </a>
+                <a href="#" class="collection-item">
+                    <img src="https://media.canifa.com/Simiconnector/bst_canifa_s.webp" alt="Canifa S">
+                    <div class="collection-info">
+                        <span class="collection-name">Canifa S</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kids Section -->
+    <section class="kids-section">
+        <div class="container">
+            <h2 class="section-title">THỜI TRANG TRẺ EM</h2>
+            <div class="kids-grid">
+                <a href="#" class="kids-banner girl">
+                    <img src="https://media.canifa.com/Simiconnector/banner_girl.webp" alt="Bé gái">
+                    <div class="kids-overlay">
+                        <h3>BÉ GÁI</h3>
+                        <span>Xem ngay →</span>
+                    </div>
+                </a>
+                <a href="#" class="kids-banner boy">
+                    <img src="https://media.canifa.com/Simiconnector/banner_boy.webp" alt="Bé trai">
+                    <div class="kids-overlay">
+                        <h3>BÉ TRAI</h3>
+                        <span>Xem ngay →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <h2 class="section-title">TIN TỨC & CẢM HỨNG</h2>
+            <div class="blog-grid">
+                <a href="#" class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://media.canifa.com/Simiconnector/blog1.webp" alt="Blog post">
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-date">15/01/2026</span>
+                        <h3 class="blog-title">Xu hướng thời trang xuân hè 2026</h3>
+                        <p class="blog-excerpt">Khám phá những xu hướng thời trang mới nhất cho mùa xuân hè năm nay...
+                        </p>
+                    </div>
+                </a>
+                <a href="#" class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://media.canifa.com/Simiconnector/blog2.webp" alt="Blog post">
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-date">12/01/2026</span>
+                        <h3 class="blog-title">Cách phối đồ đi làm chuẩn công sở</h3>
+                        <p class="blog-excerpt">Những gợi ý phối đồ thanh lịch, chuyên nghiệp cho môi trường công sở...
+                        </p>
+                    </div>
+                </a>
+                <a href="#" class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://media.canifa.com/Simiconnector/blog3.webp" alt="Blog post">
+                    </div>
+                    <div class="blog-content">
+                        <span class="blog-date">10/01/2026</span>
+                        <h3 class="blog-title">Mix & Match cùng áo len mùa đông</h3>
+                        <p class="blog-excerpt">Hướng dẫn cách phối áo len theo nhiều phong cách khác nhau...</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Download Section -->
+    <section class="app-section">
+        <div class="container">
+            <div class="app-content">
+                <div class="app-info">
+                    <h2>TẢI ỨNG DỤNG CANIFA</h2>
+                    <p>Mua sắm dễ dàng hơn với ứng dụng di động</p>
+                    <div class="app-features">
+                        <div class="feature">
+                            <span class="feature-icon">🎁</span>
+                            <span>Ưu đãi độc quyền</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">🔔</span>
+                            <span>Thông báo khuyến mãi</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">📱</span>
+                            <span>Theo dõi đơn hàng</span>
+                        </div>
+                    </div>
+                    <div class="app-buttons">
+                        <a href="#" class="app-btn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                                alt="Google Play">
+                        </a>
+                        <a href="#" class="app-btn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                                alt="App Store">
+                        </a>
+                    </div>
+                </div>
+                <div class="app-image">
+                    <img src="https://canifa.com/assets/images/app-mockup.png" alt="Canifa App">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Column 1 -->
+                <div class="footer-col">
+                    <h4>CÔNG TY CỔ PHẦN CANIFA</h4>
+                    <p>Số ĐKKD: 0107574310, ngày cấp 23/09/2016, nơi cấp: Sở Kế Hoạch và Đầu Tư Hà Nội</p>
+                    <p><strong>Địa chỉ:</strong> Tầng 18 Tòa nhà Center Building, số 1 Nguyễn Huy Tưởng, P. Thanh Xuân
+                        Trung, Q. Thanh Xuân, Hà Nội</p>
+                    <p><strong>Điện thoại:</strong> 1800 6061 (miễn phí)</p>
+                    <p><strong>Email:</strong> support@canifa.com</p>
+                    <div class="footer-certifications">
+                        <img src="https://canifa.com/assets/images/bocongthuong.png" alt="Bộ Công Thương">
+                        <img src="https://canifa.com/assets/images/dmca.png" alt="DMCA">
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="footer-col">
+                    <h4>VỀ CANIFA</h4>
+                    <ul>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Triết lý kinh doanh</a></li>
+                        <li><a href="#">Hệ thống cửa hàng</a></li>
+                        <li><a href="#">Tin tức & Sự kiện</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="footer-col">
+                    <h4>HỖ TRỢ KHÁCH HÀNG</h4>
+                    <ul>
+                        <li><a href="#">Hướng dẫn chọn size</a></li>
+                        <li><a href="#">Chính sách khách hàng thân thiết</a></li>
+                        <li><a href="#">Chính sách đổi/trả</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Chính sách Thanh toán, Vận chuyển</a></li>
+                        <li><a href="#">Thanh toán trả góp</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 -->
+                <div class="footer-col">
+                    <h4>TÀI KHOẢN</h4>
+                    <ul>
+                        <li><a href="#">Đăng nhập/Đăng ký</a></li>
+                        <li><a href="#">Chi tiết tài khoản</a></li>
+                        <li><a href="#">Lịch sử mua hàng</a></li>
+                    </ul>
+                    <h4 class="social-title">MẠNG XÃ HỘI</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link youtube">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                </path>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"></polygon>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link zalo">
+                            <img src="https://canifa.com/assets/images/zalo-icon.png" alt="Zalo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="footer-payment">
+                <span>Phương thức thanh toán:</span>
+                <div class="payment-icons">
+                    <img src="https://canifa.com/assets/images/payment/visa.png" alt="Visa">
+                    <img src="https://canifa.com/assets/images/payment/mastercard.png" alt="Mastercard">
+                    <img src="https://canifa.com/assets/images/payment/jcb.png" alt="JCB">
+                    <img src="https://canifa.com/assets/images/payment/momo.png" alt="MoMo">
+                    <img src="https://canifa.com/assets/images/payment/vnpay.png" alt="VNPay">
+                    <img src="https://canifa.com/assets/images/payment/cod.png" alt="COD">
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>© 2026 CANIFA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="login-modal-overlay" id="loginModal">
+        <div class="login-modal">
+            <button class="login-modal-close" id="closeLoginModal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Member Benefits Banner -->
+            <div class="login-benefits-banner">
+                <div class="benefits-content">
+                    <h3>QUYỀN LỢI<br>THÀNH VIÊN</h3>
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🎁</span>
+                            <span>Nhận voucher giảm giá</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">💰</span>
+                            <span>Ưu đãi lên tới 15%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefits-image">
+                    <img src="https://canifa.com/assets/images/member-benefit.png" alt="Member Benefits">
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="login-form-container">
+                <h2 class="login-title">ĐĂNG NHẬP</h2>
+                <p class="login-subtitle">Đăng nhập miễn phí để trở thành Khách hàng thân thiết và nhận ưu đãi độc quyền
+                    từ CANIFA.</p>
+
+                <!-- Phone Login Form -->
+                <form class="login-form" id="phoneLoginForm">
+                    <div class="form-group">
+                        <input type="tel" id="phoneInput" class="form-input" placeholder="Vui lòng nhập số điện thoại"
+                            required>
+                    </div>
+                    <button type="submit" class="btn-login-submit">TIẾP TỤC</button>
+                </form>
+
+                <!-- Divider -->
+                <div class="login-divider">
+                    <span>HOẶC</span>
+                </div>
+
+                <!-- Google Login Button -->
+                <button class="btn-google-login" id="googleLoginBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    <span>Đăng nhập với Google</span>
+                </button>
+
+                <!-- Terms -->
+                <p class="login-terms">
+                    * Khi ấn tiếp tục, bạn xác nhận đã đọc và đồng ý với <a href="#">Điều khoản dịch vụ</a> cùng <a
+                        href="#">Chính sách bảo mật</a> của Canifa.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP Verification Modal -->
+    <div class="otp-modal-overlay" id="otpModal">
+        <div class="otp-modal">
+            <button class="login-modal-close" id="closeOtpModal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="otp-title">XÁC THỰC OTP</h2>
+            <p class="otp-subtitle">Mã xác thực đã được gửi đến số điện thoại <span id="otpPhone"></span></p>
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" class="otp-input" data-index="0">
+                <input type="text" maxlength="1" class="otp-input" data-index="1">
+                <input type="text" maxlength="1" class="otp-input" data-index="2">
+                <input type="text" maxlength="1" class="otp-input" data-index="3">
+                <input type="text" maxlength="1" class="otp-input" data-index="4">
+                <input type="text" maxlength="1" class="otp-input" data-index="5">
+            </div>
+            <button class="btn-verify-otp" id="verifyOtpBtn">XÁC NHẬN</button>
+            <p class="otp-resend">Chưa nhận được mã? <a href="#" id="resendOtp">Gửi lại</a></p>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

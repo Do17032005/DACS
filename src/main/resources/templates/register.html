@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Đăng ký thành viên | CANIFA</title>
+    <style>
+        .register-page-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            background-color: #f8f9fa;
+            min-height: calc(100vh - 400px);
+        }
+
+        .register-card-modern {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .register-benefits {
+            flex: 1;
+            background: linear-gradient(135deg, #DA291C 0%, #c41e3a 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-form-side {
+            flex: 1.2;
+            padding: 50px;
+        }
+
+        .benefit-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .benefit-icon {
+            font-size: 24px;
+        }
+
+        .register-header {
+            margin-bottom: 30px;
+        }
+
+        .register-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .register-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-control-modern {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-control-modern:focus {
+            outline: none;
+            border-color: #DA291C;
+            box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.1);
+        }
+
+        .btn-register-modern {
+            width: 100%;
+            padding: 14px;
+            background: #DA291C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-register-modern:hover {
+            background: #b52218;
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #DA291C;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .register-card-modern {
+                flex-direction: column;
+            }
+
+            .register-benefits {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <main class="register-page-container">
+        <div class="register-card-modern">
+            <div class="register-benefits">
+                <h2 class="benefit-title">TRỞ THÀNH<br>THÀNH VIÊN</h2>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🎁</span>
+                    <span>Tặng mã giảm giá 50K cho đơn đầu tiên</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🚚</span>
+                    <span>Miễn phí vận chuyển cho khách hàng mới</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">⚡</span>
+                    <span>Trải nghiệm mua sắm thông minh với AI</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📅</span>
+                    <span>Cập nhật nhanh nhất xu hướng thời trang</span>
+                </div>
+            </div>
+
+            <div class="register-form-side">
+                <div class="register-header">
+                    <h1 class="register-title">ĐĂNG KÝ</h1>
+                    <p class="register-desc">Tham gia cùng hàng triệu khách hàng của CANIFA.</p>
+                </div>
+
+                <form th:action="@{/register}" th:object="${user}" method="post">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Tên đăng nhập <span style="color:red">*</span></label>
+                        <input type="text" class="form-control-modern" id="username" th:field="*{username}"
+                            placeholder="Nhập tên đăng nhập" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Mật khẩu <span style="color:red">*</span></label>
+                        <input type="password" class="form-control-modern" id="password" th:field="*{password}"
+                            placeholder="Nhập mật khẩu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control-modern" id="fullName" th:field="*{fullName}"
+                            placeholder="Nhập họ và tên">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control-modern" id="email" th:field="*{email}"
+                            placeholder="example@gmail.com">
+                    </div>
+                    <button type="submit" class="btn-register-modern">ĐĂNG KÝ NGAY</button>
+                </form>
+
+                <div class="login-link">
+                    Bạn đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

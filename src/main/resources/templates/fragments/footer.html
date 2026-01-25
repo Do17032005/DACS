@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="footer">
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <!-- Column 1 -->
+                    <div class="footer-col">
+                        <h4>CÔNG TY CỔ PHẦN CANIFA</h4>
+                        <p>Số ĐKKD: 0107574310, ngày cấp 23/09/2016, nơi cấp: Sở Kế Hoạch và Đầu Tư Hà Nội</p>
+                        <p><strong>Địa chỉ:</strong> Tầng 18 Tòa nhà Center Building, số 1 Nguyễn Huy Tưởng, P. Thanh
+                            Xuân Trung, Q. Thanh Xuân, Hà Nội</p>
+                        <p><strong>Điện thoại:</strong> 1800 6061 (miễn phí)</p>
+                        <p><strong>Email:</strong> support@canifa.com</p>
+                        <div class="footer-certifications">
+                            <img th:src="@{https://canifa.com/assets/images/bocongthuong.png}" alt="Bộ Công Thương">
+                            <img th:src="@{https://canifa.com/assets/images/dmca.png}" alt="DMCA">
+                        </div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="footer-col">
+                        <h4>VỀ CANIFA</h4>
+                        <ul>
+                            <li><a href="#">Giới thiệu</a></li>
+                            <li><a href="#">Triết lý kinh doanh</a></li>
+                            <li><a href="#">Hệ thống cửa hàng</a></li>
+                            <li><a href="#">Tin tức & Sự kiện</a></li>
+                            <li><a href="#">Tuyển dụng</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 3 -->
+                    <div class="footer-col">
+                        <h4>HỖ TRỢ KHÁCH HÀNG</h4>
+                        <ul>
+                            <li><a href="#">Hướng dẫn chọn size</a></li>
+                            <li><a href="#">Chính sách khách hàng thân thiết</a></li>
+                            <li><a href="#">Chính sách đổi/trả</a></li>
+                            <li><a href="#">Chính sách bảo mật</a></li>
+                            <li><a href="#">Chính sách Thanh toán, Vận chuyển</a></li>
+                            <li><a href="#">Thanh toán trả góp</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 4 -->
+                    <div class="footer-col">
+                        <h4>TÀI KHOẢN</h4>
+                        <ul>
+                            <li><a th:href="@{/login}">Đăng nhập/Đăng ký</a></li>
+                            <li><a th:href="@{/profile}">Chi tiết tài khoản</a></li>
+                            <li><a th:href="@{/orders}">Lịch sử mua hàng</a></li>
+                        </ul>
+                        <h4 class="social-title">MẠNG XÃ HỘI</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link facebook">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-link instagram">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-link youtube">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                    </path>
+                                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"></polygon>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-link zalo">
+                                <img th:src="@{https://canifa.com/assets/images/zalo-icon.png}" alt="Zalo">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="footer-payment">
+                    <span>Phương thức thanh toán:</span>
+                    <div class="payment-icons">
+                        <img th:src="@{https://canifa.com/assets/images/payment/visa.png}" alt="Visa">
+                        <img th:src="@{https://canifa.com/assets/images/payment/mastercard.png}" alt="Mastercard">
+                        <img th:src="@{https://canifa.com/assets/images/payment/jcb.png}" alt="JCB">
+                        <img th:src="@{https://canifa.com/assets/images/payment/momo.png}" alt="MoMo">
+                        <img th:src="@{https://canifa.com/assets/images/payment/vnpay.png}" alt="VNPay">
+                        <img th:src="@{https://canifa.com/assets/images/payment/cod.png}" alt="COD">
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="footer-bottom">
+                    <p>© 2026 CANIFA. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- AI Chatbot Widget -->
+        <div class="chatbot-widget" id="chatbotWidget">
+            <div class="chatbot-toggle" id="chatbotToggle">
+                <span class="chatbot-icon">🤖</span>
+                <span class="chatbot-badge">AI</span>
+            </div>
+            <div class="chatbot-window" id="chatbotWindow">
+                <div class="chatbot-header">
+                    <div class="chatbot-avatar">🤖</div>
+                    <div class="chatbot-info">
+                        <h4>CANIFA AI Assistant</h4>
+                        <span class="chatbot-status">● Online</span>
+                    </div>
+                    <button class="chatbot-close" id="chatbotClose">×</button>
+                </div>
+                <div class="chatbot-messages" id="chatbotMessages">
+                    <div class="chat-message bot">
+                        <div class="message-content">
+                            Xin chào! 👋 Tôi là trợ lý AI của CANIFA. Tôi có thể giúp bạn:
+                            <ul>
+                                <li>🔍 Tìm kiếm sản phẩm</li>
+                                <li>👕 Gợi ý trang phục</li>
+                                <li>📦 Tra cứu đơn hàng</li>
+                                <li>💬 Hỗ trợ mua sắm</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatbot-quick-actions">
+                    <button class="quick-btn" onclick="sendQuickMessage('Gợi ý áo cho mùa đông')">🧥 Áo mùa
+                        đông</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Sản phẩm đang sale')">🏷️ Đang sale</button>
+                    <button class="quick-btn" onclick="sendQuickMessage('Size của tôi là gì')">📐 Hướng dẫn
+                        size</button>
+                </div>
+                <div class="chatbot-input">
+                    <input type="text" id="chatInput" placeholder="Nhập tin nhắn..."
+                        onkeypress="if(event.key==='Enter')sendMessage()">
+                    <button class="send-btn" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Top Button -->
+        <button class="back-to-top" id="backToTop">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        </button>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script th:src="@{/js/main.js}"></script>
+        <script>
+            // Chatbot functionality
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatMessages = document.getElementById('chatbotMessages');
+            const chatInput = document.getElementById('chatInput');
+
+            if (chatbotToggle) {
+                chatbotToggle.addEventListener('click', () => chatbotWindow.classList.add('active'));
+                chatbotClose.addEventListener('click', () => chatbotWindow.classList.remove('active'));
+            }
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                addMessage(text, 'user');
+                chatInput.value = '';
+                setTimeout(() => getAIResponse(text), 800);
+            }
+
+            function sendQuickMessage(text) {
+                addMessage(text, 'user');
+                setTimeout(() => getAIResponse(text), 800);
+            }
+
+            function addMessage(text, type) {
+                const msg = document.createElement('div');
+                msg.className = `chat-message ${type}`;
+                msg.innerHTML = `<div class="message-content">${text}</div>`;
+                chatMessages.appendChild(msg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function getAIResponse(query) {
+                const q = query.toLowerCase();
+                let response = '';
+
+                if (q.includes('áo') && (q.includes('đông') || q.includes('mùa'))) {
+                    response = `Dựa trên xu hướng mùa đông 2026, tôi gợi ý cho bạn:
+                    <div class="product-suggestion"><img src="https://media.canifa.com/catalog/product/cache/400x/6AT24W011-SK010-L.webp"><div class="product-suggestion-info"><div class="product-suggestion-name">Áo Khoác Nữ Dáng Ngắn</div><div class="product-suggestion-price">599,000đ</div></div></div>
+                    <div class="product-suggestion"><img src="https://media.canifa.com/catalog/product/cache/400x/6AL24W001-SK055-L.webp"><div class="product-suggestion-info"><div class="product-suggestion-name">Áo Len Nữ Cổ Tròn</div><div class="product-suggestion-price">359,000đ</div></div></div>`;
+                } else if (q.includes('sale') || q.includes('giảm giá')) {
+                    response = `🔥 Các sản phẩm đang SALE HOT:<br><br>• Áo Thun Nữ Phối Màu: <b>-30%</b> → 299,000đ<br>• Áo Len Cổ Tròn: <b>-40%</b> → 359,000đ<br>• Áo Sơ Mi Tay Dài: <b>-25%</b> → 449,000đ<br><br><a href="/products" style="color:#DA291C;font-weight:600">Xem tất cả →</a>`;
+                } else if (q.includes('size')) {
+                    response = `📐 <b>Hướng dẫn chọn size:</b><br><br>• XS: 40-45kg, cao 150-155cm<br>• S: 45-50kg, cao 155-160cm<br>• M: 50-55kg, cao 160-165cm<br>• L: 55-60kg, cao 165-170cm<br>• XL: 60-65kg, cao 170-175cm<br><br>💡 Tip: Nếu bạn thích mặc rộng, hãy chọn lên 1 size!`;
+                } else if (q.includes('đơn hàng') || q.includes('giao')) {
+                    response = `📦 Để tra cứu đơn hàng, bạn vui lòng:<br><br>1. Đăng nhập tài khoản<br>2. Vào mục "Đơn hàng" trong tài khoản<br><br>Hoặc liên hệ hotline: <b>1800 6061</b> (miễn phí)`;
+                } else {
+                    response = `Tôi hiểu bạn đang tìm kiếm "${query}". Để hỗ trợ tốt hơn, bạn có thể cho tôi biết thêm:<br><br>• Bạn muốn tìm sản phẩm nam hay nữ?<br>• Ngân sách dự kiến của bạn?<br>• Phong cách bạn yêu thích?`;
+                }
+                addMessage(response, 'bot');
+            }
+        </script>
+    </div>
+</body>
+
+</html>

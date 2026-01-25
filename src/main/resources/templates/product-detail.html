@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    font-size: 13px;
+    }
+
+    .feature-icon {
+    font-size: 20px;
+    }
+
+    .product-description {
+    margin-bottom: 30px;
+    }
+
+    .desc-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    }
+
+    .desc-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #555;
+    }
+
+    .related-section {
+    margin-top: 60px;
+    }
+
+    .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    }
+
+    .related-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+    .product-container {
+    grid-template-columns: 1fr;
+    }
+
+    .related-grid {
+    grid-template-columns: repeat(2, 1fr);
+    }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="top-banner">
+        <div class="container"><a href="#" class="promo-link"><span class="promo-text">CANIFA SHOPPING DAYS</span><span
+                    class="promo-divider">|</span><span>GIẢM TỚI 50%</span></a></div>
+    </div>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content"><a th:href="@{/}" class="logo"><img
+                        th:src="@{https://canifa.com/assets/images/logo.svg}" alt="CANIFA"></a>
+                <div class="search-bar"><input type="text" placeholder="Tìm kiếm" class="search-input"><button
+                        class="search-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.35-4.35" />
+                        </svg></button></div>
+                <div class="header-icons"><a href="profile.html" class="header-icon-link" id="loginBtn"><svg width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg><span>Tài khoản</span></a><a href="cart.html" class="header-icon-link cart-link"><svg
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <path d="M16 10a4 4 0 0 1-8 0" />
+                        </svg><span>Giỏ hàng</span><span class="cart-count" id="cartCount">0</span></a></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="product-detail">
+        <div class="breadcrumb"><a href="index.html">Trang chủ</a><span>›</span><a
+                href="products.html">Nữ</a><span>›</span><a href="#">Áo thun</a><span>›</span><span>Áo Thun Nữ Phối
+                Màu</span></div>
+
+        <div class="product-container">
+            <div class="product-gallery">
+                <div class="main-image"><img th:src="${product.imageUrl}" th:alt="${product.name}" id="mainImage"></div>
+                <div class="thumbnail-list">
+                    <div class="thumbnail active"
+                        onclick="changeImage(this, 'https://media.canifa.com/catalog/product/cache/400x/6TS24W003-SJ146-L.webp')">
+                        <img src="https://media.canifa.com/catalog/product/cache/400x/6TS24W003-SJ146-L.webp">
+                    </div>
+                    <div class="thumbnail"
+                        onclick="changeImage(this, 'https://media.canifa.com/catalog/product/cache/400x/6AT24W011-SK010-L.webp')">
+                        <img src="https://media.canifa.com/catalog/product/cache/400x/6AT24W011-SK010-L.webp">
+                    </div>
+                    <div class="thumbnail"
+                        onclick="changeImage(this, 'https://media.canifa.com/catalog/product/cache/400x/6AL24W001-SK055-L.webp')">
+                        <img src="https://media.canifa.com/catalog/product/cache/400x/6AL24W001-SK055-L.webp">
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-info">
+                <h1 th:text="${product.name}">Áo Thun Nữ Phối Màu</h1>
+                <p class="product-sku" th:text="'SKU: ' + ${product.id}">SKU: 6TS24W003-SJ146</p>
+                <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(128 đánh
+                        giá)</span></div>
+
+                <div class="product-price-section">
+                    <div class="price-row"><span class="current-price"
+                            th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}">299,000đ</span>
+                    </div>
+                </div>
+
+                <div class="variant-section">
+                    <p class="variant-title">Màu sắc: <strong>Xanh Navy</strong></p>
+                    <div class="color-options">
+                        <button class="color-btn active" style="background:#1a1a2e"></button>
+                        <button class="color-btn" style="background:#f5f5dc"></button>
+                        <button class="color-btn" style="background:#8b4513"></button>
+                    </div>
+                </div>
+
+                <div class="variant-section">
+                    <p class="variant-title">Kích thước: <strong>M</strong> <a class="size-guide">Hướng dẫn chọn
+                            size</a></p>
+                    <div class="size-options">
+                        <button class="size-btn">XS</button>
+                        <button class="size-btn">S</button>
+                        <button class="size-btn active">M</button>
+                        <button class="size-btn">L</button>
+                        <button class="size-btn">XL</button>
+                        <button class="size-btn disabled">XXL</button>
+                    </div>
+                </div>
+
+                <div class="quantity-section">
+                    <p class="variant-title">Số lượng:</p>
+                    <div class="quantity-control">
+                        <button class="qty-btn" onclick="changeQty(-1)">-</button>
+                        <input type="number" class="qty-input" value="1" min="1" id="qtyInput">
+                        <button class="qty-btn" onclick="changeQty(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <form th:action="@{/order/place}" method="post" style="display: flex; gap: 15px; flex: 1;">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <input type="hidden" name="quantity" id="formQty" value="1">
+                        <button type="submit" class="btn-add-cart">🛒 Mua ngay</button>
+                    </form>
+                    <button class="btn-wishlist">♡</button>
+                </div>
+
+                <div class="product-features">
+                    <div class="feature-item"><span class="feature-icon">🔄</span><span>Đổi trả miễn phí 30 ngày</span>
+                    </div>
+                    <div class="feature-item"><span class="feature-icon">🚚</span><span>Freeship đơn từ 499K</span>
+                    </div>
+                    <div class="feature-item"><span class="feature-icon">✓</span><span>100% hàng chính hãng</span></div>
+                </div>
+
+                <div class="product-description">
+                    <h3 class="desc-title">Mô tả sản phẩm</h3>
+                    <div class="desc-content">
+                        <p th:text="${product.description}">Mô tả sản phẩm</p>
+                        <ul style="margin:15px 0 0 20px">
+                            <li>Chất liệu: Cotton 100%</li>
+                            <li>Form: Regular fit</li>
+                            <li>Xuất xứ: Việt Nam</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="related-section">
+            <h2 class="section-title">🤖 Sản phẩm gợi ý cho bạn</h2>
+            <div class="related-grid">
+                <a href="#" class="product-card">
+                    <div class="product-image"><img
+                            src="https://media.canifa.com/catalog/product/cache/400x/6AT24W011-SK010-L.webp"></div>
+                    <div class="product-info">
+                        <h3 class="product-name">Áo Khoác Nữ Dáng Ngắn</h3>
+                        <div class="product-price"><span class="price-current">599,000đ</span></div>
+                    </div>
+                </a>
+                <a href="#" class="product-card">
+                    <div class="product-image"><img
+                            src="https://media.canifa.com/catalog/product/cache/400x/6AL24W001-SK055-L.webp"></div>
+                    <div class="product-info">
+                        <h3 class="product-name">Áo Len Nữ Cổ Tròn</h3>
+                        <div class="product-price"><span class="price-current">359,000đ</span><span
+                                class="price-original">599,000đ</span></div>
+                    </div>
+                </a>
+                <a href="#" class="product-card">
+                    <div class="product-image"><img
+                            src="https://media.canifa.com/catalog/product/cache/400x/6QJ24W001-SB055-L.webp"></div>
+                    <div class="product-info">
+                        <h3 class="product-name">Quần Jean Nữ Ống Rộng</h3>
+                        <div class="product-price"><span class="price-current">499,000đ</span></div>
+                    </div>
+                </a>
+                <a href="#" class="product-card">
+                    <div class="product-image"><img
+                            src="https://media.canifa.com/catalog/product/cache/400x/6AS24W001-SW807-L.webp"></div>
+                    <div class="product-info">
+                        <h3 class="product-name">Áo Sơ Mi Nữ Tay Dài</h3>
+                        <div class="product-price"><span class="price-current">449,000đ</span></div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        function changeImage(el, src) { document.getElementById('mainImage').src = src; document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
+        function changeQty(delta) { const input = document.getElementById('qtyInput'); input.value = Math.max(1, parseInt(input.value) + delta); document.getElementById('formQty').value = input.value; }
+        function addToCart() {
+            const qty = parseInt(document.getElementById('qtyInput').value);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ id: 1, name: 'Áo Thun Nữ Phối Màu', price: 299000, qty, image: 'https://media.canifa.com/catalog/product/cache/400x/6TS24W003-SJ146-L.webp', color: 'Xanh Navy', size: 'M' });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+            showToast('Đã thêm vào giỏ hàng!', 'success');
+        }
+        function buyNow() { addToCart(); window.location.href = '/cart'; }
+        document.querySelectorAll('.color-btn').forEach(btn => btn.onclick = function () { document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); });
+        document.querySelectorAll('.size-btn:not(.disabled)').forEach(btn => btn.onclick = function () { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); });
+    </script>
+</body>
+
+</html>

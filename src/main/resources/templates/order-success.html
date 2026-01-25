@@ -1,0 +1,37 @@
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Đặt hàng thành công | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="success-page">
+        <!-- ... existing card content ... -->
+        <div class="success-card">
+            <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg></div>
+            <h1 class="success-title">Đặt hàng thành công!</h1>
+            <p class="success-message">Cảm ơn bạn đã tin tưởng và mua sắm tại CANIFA. Đơn hàng của bạn đang được xử lý.
+            </p>
+            <div class="order-info">
+                <p>Mã đơn hàng:</p>
+                <p class="order-code" id="orderCode">DH2026011601</p>
+                <p style="margin-top:15px">Thời gian giao hàng dự kiến: <strong>2-3 ngày</strong></p>
+            </div>
+            <div class="success-actions">
+                <a href="/" class="btn-home">Về trang chủ</a>
+                <a href="/orders" class="btn-orders">Xem đơn hàng</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        const orderCodeEl = document.getElementById('orderCode');
+        if (orderCodeEl) orderCodeEl.textContent = 'DH' + Date.now().toString().slice(-10);
+    </script>
+</body>
+
+</html>

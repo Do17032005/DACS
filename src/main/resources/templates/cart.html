@@ -1,0 +1,74 @@
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Giỏ hàng | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="cart-page">
+        <h1>🛒 Giỏ hàng của bạn</h1>
+        <div class="cart-container" id="cartContainer">
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-summary">
+                <h2 class="summary-title">Tóm tắt đơn hàng</h2>
+                <div class="coupon-section">
+                    <div class="coupon-input"><input type="text" placeholder="Nhập mã giảm giá"><button
+                            class="btn-apply">Áp dụng</button></div>
+                </div>
+                <div class="summary-row"><span>Tạm tính</span><span id="subtotal">0đ</span></div>
+                <div class="summary-row"><span>Phí vận chuyển</span><span id="shipping">Miễn phí</span></div>
+                <div class="summary-row"><span>Giảm giá</span><span id="discount">0đ</span></div>
+                <div class="summary-row total"><span>Tổng cộng</span><span class="value" id="total">0đ</span></div>
+                <button class="btn-checkout" onclick="goToCheckout()">Tiến hành thanh toán</button>
+                <a href="products.html" class="continue-shopping">← Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const container = document.getElementById('cartItems');
+
+            if (cart.length === 0) {
+                document.getElementById('cartContainer').innerHTML = `<div class="empty-cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><h2>Giỏ hàng trống</h2><p>Bạn chưa có sản phẩm nào trong giỏ hàng</p><a href="/products" class="btn-shop">Mua sắm ngay</a></div>`;
+                return;
+            }
+
+            let html = `<div class="cart-header"><span>Sản phẩm</span><span>Đơn giá</span><span>Số lượng</span><span>Thành tiền</span><span></span></div>`;
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+                html += `<div class="cart-item"><div class="item-info"><div class="item-image"><img src="${item.image}"></div><div class="item-details"><h3>${item.name}</h3><p class="item-variant">Màu: ${item.color} | Size: ${item.size}</p></div></div><div class="item-price">${item.price.toLocaleString()}đ</div><div class="quantity-control"><button class="qty-btn" onclick="updateQty(${index},-1)">-</button><input type="number" class="qty-input" value="${item.qty}" readonly><button class="qty-btn" onclick="updateQty(${index},1)">+</button></div><div class="item-total">${itemTotal.toLocaleString()}đ</div><button class="btn-remove" onclick="removeItem(${index})">✕</button></div>`;
+            });
+
+            container.innerHTML = html;
+            document.getElementById('subtotal').textContent = subtotal.toLocaleString() + 'đ';
+            document.getElementById('total').textContent = subtotal.toLocaleString() + 'đ';
+        }
+
+        function updateQty(index, delta) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].qty = Math.max(1, cart[index].qty + delta);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            showToast('Đã xóa sản phẩm', 'success');
+        }
+
+        function goToCheckout() { window.location.href = '/checkout'; }
+        renderCart();
+    </script>
+</body>
+
+</html>

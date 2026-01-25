@@ -1,0 +1,49 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.example:Clothesshoponline >--------------------
+[INFO] Building Clothesshoponline 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ Clothesshoponline ---
+[INFO] Deleting C:\Users\ADMIN\Desktop\Clothesshoponline_v2\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ Clothesshoponline ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ Clothesshoponline ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 48 source files with javac [debug parameters release 17] to target\classes
+[INFO] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/ADMIN/Desktop/Clothesshoponline_v2/src/main/java/com/example/Clothesshoponline/config/TestConfig.java:[9,26] no suitable constructor found for Client(java.util.Optional<java.lang.String>)
+    constructor com.google.genai.Client.Client() is not applicable
+      (actual and formal argument lists differ in length)
+    constructor com.google.genai.Client.Client(java.util.Optional<java.lang.String>,java.util.Optional<java.lang.String>,java.util.Optional<java.lang.String>,java.util.Optional<com.google.auth.oauth2.GoogleCredentials>,java.util.Optional<com.google.genai.types.HttpOptions>,java.util.Optional<java.lang.Boolean>,java.util.Optional<com.google.genai.DebugConfig>,java.util.Optional<java.util.Map<java.lang.String,java.lang.String>>) is not applicable
+      (actual and formal argument lists differ in length)
+[ERROR] /C:/Users/ADMIN/Desktop/Clothesshoponline_v2/src/main/java/com/example/Clothesshoponline/config/TestConfig.java:[12,42] incompatible types: no instance(s) of type variable(s) T exist so that java.util.Optional<T> conforms to java.lang.String
+[INFO] 2 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.659 s
+[INFO] Finished at: 2026-01-23T19:02:07+07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project Clothesshoponline: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/ADMIN/Desktop/Clothesshoponline_v2/src/main/java/com/example/Clothesshoponline/config/TestConfig.java:[9,26] no suitable constructor found for Client(java.util.Optional<java.lang.String>)
+[ERROR]     constructor com.google.genai.Client.Client() is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     constructor com.google.genai.Client.Client(java.util.Optional<java.lang.String>,java.util.Optional<java.lang.String>,java.util.Optional<java.lang.String>,java.util.Optional<com.google.auth.oauth2.GoogleCredentials>,java.util.Optional<com.google.genai.types.HttpOptions>,java.util.Optional<java.lang.Boolean>,java.util.Optional<com.google.genai.DebugConfig>,java.util.Optional<java.util.Map<java.lang.String,java.lang.String>>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR] /C:/Users/ADMIN/Desktop/Clothesshoponline_v2/src/main/java/com/example/Clothesshoponline/config/TestConfig.java:[12,42] incompatible types: no instance(s) of type variable(s) T exist so that java.util.Optional<T> conforms to java.lang.String
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

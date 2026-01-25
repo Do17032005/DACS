@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Thông tin tài khoản | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="breadcrumb-list">
+            <a href="/">Trang chủ</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="/profile">Tài khoản</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">Thông tin tài khoản</span>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <!-- Sidebar -->
+        <aside class="profile-sidebar">
+            <div class="sidebar-user-info">
+                <div class="sidebar-avatar" id="userAvatar">👤</div>
+                <p class="sidebar-greeting">Xin chào!</p>
+                <p class="sidebar-name" id="userName" th:text="${user != null ? user.fullName : 'Khách hàng'}">Khách
+                    hàng</p>
+                <div class="sidebar-member-level">
+                    <span class="member-badge"></span>
+                    <span id="memberLevel">Hạng Green</span>
+                    <span>•</span>
+                    <span>KMT: <span id="userPoints">0</span></span>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a th:href="@{/profile}" class="sidebar-menu-item active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a th:href="@{/vouchers}" class="sidebar-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <span>Mã ưu đãi</span>
+                    <span class="badge" id="voucherCount">2</span>
+                </a>
+                <a th:href="@{/orders}" class="sidebar-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span>Đơn hàng</span>
+                </a>
+                <a th:href="@{/membership}" class="sidebar-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                    <span>Thẻ thành viên</span>
+                </a>
+                <a th:href="@{/address}" class="sidebar-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Sổ địa chỉ</span>
+                </a>
+                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                    <button type="submit" class="sidebar-menu-item logout"
+                        style="width: 100%; border: none; background: none; font: inherit; cursor: pointer;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Đăng xuất</span>
+                    </button>
+                </form>
+            </nav>
+        </aside>
+
+        <!-- Profile Content -->
+        <main class="profile-content">
+            <div class="profile-header">
+                <div>
+                    <h1 class="profile-title">THÔNG TIN TÀI KHOẢN</h1>
+                    <p class="profile-subtitle">Cập nhật thông tin cá nhân để hoàn tất quá trình đăng ký thành viên
+                        Canifa.</p>
+                </div>
+            </div>
+
+            <!-- Points Summary -->
+            <div class="points-summary">
+                <div class="points-card highlight">
+                    <div class="points-value" id="availablePoints">200</div>
+                    <div class="points-label">Điểm khả dụng</div>
+                </div>
+                <div class="points-card">
+                    <div class="points-value" id="pendingPoints">0</div>
+                    <div class="points-label">Điểm chờ xác nhận</div>
+                </div>
+            </div>
+
+            <!-- Profile Form -->
+            <form class="profile-form" id="profileForm">
+                <div class="form-row single">
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Nhập họ và tên"
+                            th:value="${user != null ? user.fullName : ''}" required>
+                    </div>
+                </div>
+
+                <div class="form-row single">
+                    <div class="form-group">
+                        <label class="form-label">Giới tính</label>
+                        <div class="gender-options">
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="male">
+                                <span>Nam</span>
+                            </label>
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="female">
+                                <span>Nữ</span>
+                            </label>
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="other">
+                                <span>Khác</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="profilePhone"
+                            th:value="${user != null ? user.phone : ''}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="profileEmail" placeholder="Nhập email"
+                            th:value="${user != null ? user.email : ''}" </div>
+                    </div>
+
+                    <div class="form-row single">
+                        <div class="form-group">
+                            <label class="form-label">Ngày sinh</label>
+                            <input type="date" class="form-control" id="birthDate">
+                        </div>
+                    </div>
+
+                    <div class="form-note">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <div>
+                            <strong>Lưu ý:</strong>
+                            <ul style="margin: 5px 0 0 20px; padding: 0;">
+                                <li>Ngày sinh chỉ được cập nhật <strong>1 lần duy nhất</strong></li>
+                                <li>Vui lòng liên hệ tổng đài <strong>1800 6061</strong> để được hỗ trợ thêm</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-save-profile">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Sửa thông tin
+                    </button>
+            </form>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if user is logged in (Logic will be moved to backend, but keeping for now)
+            const userNameEl = document.getElementById('userName');
+            if (userNameEl && userNameEl.textContent === 'Khách hàng') {
+                // Try to load from localStorage if backend didn't provide
+                const user = JSON.parse(localStorage.getItem('canifaUser'));
+                if (user) {
+                    document.getElementById('userName').textContent = user.name || 'Khách hàng';
+                    document.getElementById('profilePhone').value = user.phone || '';
+                    document.getElementById('profileEmail').value = user.email || '';
+                }
+            }
+
+            // Form submit
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // Future: send to backend
+                    showToast('Thông tin đã được cập nhật thành công!', 'success');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

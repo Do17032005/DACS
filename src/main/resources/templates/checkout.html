@@ -1,0 +1,154 @@
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Thanh toán | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="checkout-page">
+        <!-- ... existing content remains same ... -->
+        <h1>Thanh toán</h1>
+        <div class="checkout-container">
+            <!-- ... existing container content ... -->
+            <div class="checkout-form">
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-number">1</span>Thông tin giao hàng</h2>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Họ tên *</label><input type="text"
+                                class="form-control" placeholder="Nhập họ tên" id="fullName"></div>
+                        <div class="form-group"><label class="form-label">Số điện thoại *</label><input type="tel"
+                                class="form-control" placeholder="Nhập số điện thoại" id="phone"></div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Email</label><input type="email"
+                            class="form-control" placeholder="Nhập email" id="email"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Tỉnh/Thành phố *</label>
+                            <select class="form-control">
+                                <option>Chọn Tỉnh/Thành phố</option>
+                                <option>TP. Hồ Chí Minh</option>
+                                <option>Hà Nội</option>
+                                <option>Đà Nẵng</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label class="form-label">Quận/Huyện *</label>
+                            <select class="form-control">
+                                <option>Chọn Quận/Huyện</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Địa chỉ chi tiết *</label><input type="text"
+                            class="form-control" placeholder="Số nhà, tên đường, phường/xã"></div>
+                    <div class="form-group"><label class="form-label">Ghi chú</label><textarea class="form-control"
+                            rows="3" placeholder="Ghi chú cho đơn hàng (nếu có)"></textarea></div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="section-title"><span class="section-number">2</span>Phương thức thanh toán</h2>
+                    <div class="payment-methods">
+                        <label class="payment-option active"><input type="radio" name="payment" value="cod" checked><img
+                                src="https://cdn-icons-png.flaticon.com/128/2331/2331970.png" class="payment-logo"
+                                style="height:35px">
+                            <div class="payment-info">
+                                <div class="payment-name">Thanh toán khi nhận hàng (COD)</div>
+                                <div class="payment-desc">Thanh toán bằng tiền mặt khi nhận hàng</div>
+                            </div>
+                        </label>
+                        <label class="payment-option"><input type="radio" name="payment" value="vnpay"><img
+                                src="https://vnpay.vn/assets/images/logo-icon/logo-primary.svg" class="payment-logo">
+                            <div class="payment-info">
+                                <div class="payment-name">Ví VNPAY / QR Code</div>
+                                <div class="payment-desc">Thanh toán qua ví điện tử VNPAY</div>
+                            </div>
+                        </label>
+                        <label class="payment-option"><input type="radio" name="payment" value="momo"><img
+                                src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" class="payment-logo">
+                            <div class="payment-info">
+                                <div class="payment-name">Ví MoMo</div>
+                                <div class="payment-desc">Thanh toán qua ví điện tử MoMo</div>
+                            </div>
+                        </label>
+                        <label class="payment-option"><input type="radio" name="payment" value="bank"><img
+                                src="https://cdn-icons-png.flaticon.com/128/2830/2830284.png" class="payment-logo"
+                                style="height:35px">
+                            <div class="payment-info">
+                                <div class="payment-name">Chuyển khoản ngân hàng</div>
+                                <div class="payment-desc">Chuyển khoản trực tiếp qua tài khoản ngân hàng</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h2 class="summary-title">Đơn hàng của bạn</h2>
+                <div class="order-items" id="orderItems"></div>
+                <div class="summary-row"><span>Tạm tính</span><span id="subtotal">0đ</span></div>
+                <div class="summary-row"><span>Phí vận chuyển</span><span>Miễn phí</span></div>
+                <div class="summary-row total"><span>Tổng cộng</span><span class="value" id="total">0đ</span></div>
+                <button class="btn-place-order" onclick="placeOrder()">🔒 Đặt hàng</button>
+                <p class="secure-badge">🔐 Thanh toán an toàn & bảo mật</p>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        function renderOrderItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) { window.location.href = '/cart'; return; }
+            let html = '', subtotal = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+                html += `<div class="order-item"><div class="order-item-img"><img src="${item.image}"></div><div class="order-item-info"><div class="order-item-name">${item.name}</div><div class="order-item-variant">${item.color} / ${item.size} x${item.qty}</div></div><div class="order-item-price">${itemTotal.toLocaleString()}đ</div></div>`;
+            });
+            document.getElementById('orderItems').innerHTML = html;
+            document.getElementById('subtotal').textContent = subtotal.toLocaleString() + 'đ';
+            document.getElementById('total').textContent = subtotal.toLocaleString() + 'đ';
+        }
+
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function placeOrder() {
+            const name = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            if (!name || !phone) { showToast('Vui lòng điền đầy đủ thông tin', 'error'); return; }
+
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+            if (paymentMethod === 'vnpay') {
+                showToast('Đang chuyển đến VNPAY...', 'info');
+                setTimeout(() => { alert('Demo: Chuyển hướng đến cổng thanh toán VNPAY'); processOrder(); }, 1500);
+            } else if (paymentMethod === 'momo') {
+                showToast('Đang chuyển đến MoMo...', 'info');
+                setTimeout(() => { alert('Demo: Chuyển hướng đến ứng dụng MoMo'); processOrder(); }, 1500);
+            } else {
+                processOrder();
+            }
+        }
+
+        function processOrder() {
+            localStorage.removeItem('cart');
+            showToast('Đặt hàng thành công! Cảm ơn bạn đã mua hàng', 'success');
+            setTimeout(() => { window.location.href = '/order-success'; }, 2000);
+        }
+
+        // Pre-fill user info
+        const user = JSON.parse(localStorage.getItem('canifaUser'));
+        if (user) {
+            document.getElementById('fullName').value = user.name || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('email').value = user.email || '';
+        }
+
+        renderOrderItems();
+    </script>
+</body>
+
+</html>

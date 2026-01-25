@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+    <div th:fragment="header">
+        <!-- Top Promo Banner -->
+        <div class="top-banner">
+            <div class="container">
+                <a href="#" class="promo-link">
+                    <span class="promo-text">CANIFA SHOPPING DAYS</span>
+                    <span class="promo-divider">|</span>
+                    <span>GIẢM TỚI 50%</span>
+                    <span class="promo-divider">|</span>
+                    <span>MUA 2 NHẬN 3</span>
+                    <span class="promo-divider">|</span>
+                    <span>14/1 - 25/1</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sub Header Carousel -->
+        <div class="sub-header">
+            <div class="container">
+                <div class="sub-header-slider swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <span class="sub-header-icon">🔄</span>
+                            <span>ĐỔI HÀNG MIỄN PHÍ - TẠI TẤT CẢ CỬA HÀNG TRONG 30 NGÀY</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span class="sub-header-icon">✓</span>
+                            <span>100% HÀNG CHÍNH HÃNG</span>
+                        </div>
+                        <div class="swiper-slide">
+                            <span class="sub-header-icon">🚚</span>
+                            <span>FREESHIP ĐƠN TỪ 499K</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <header class="main-header">
+            <div class="container">
+                <div class="header-content">
+                    <!-- Logo -->
+                    <a th:href="@{/}" class="logo">
+                        <img th:src="@{https://canifa.com/assets/images/logo.svg}" alt="CANIFA" class="logo-img">
+                    </a>
+
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <input type="text" placeholder="Tìm kiếm" class="search-input">
+                        <button class="search-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Header Icons -->
+                    <div class="header-icons">
+                        <!-- Admin Panel (Only for ADMIN users) -->
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}"
+                            class="header-icon-link admin-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            <span>Admin</span>
+                        </a>
+                        <a href="/chat" class="header-icon-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M12 8V4H8"></path>
+                                <rect x="4" y="8" width="16" height="12" rx="2"></rect>
+                                <path d="M2 14h2"></path>
+                                <path d="M20 14h2"></path>
+                                <path d="M15 13v2"></path>
+                                <path d="M9 13v2"></path>
+                            </svg>
+                            <span>AI Stylist</span>
+                        </a>
+                        <a href="#" class="header-icon-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>Cửa hàng</span>
+                        </a>
+                        <div class="header-icon-link account-dropdown" id="accountDropdown">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span
+                                th:text="${#authentication != null and #authentication.name != 'anonymousUser'} ? ${#authentication.name} : 'Tài khoản'">Tài
+                                khoản</span>
+
+                            <!-- Dropdown Menu -->
+                            <div class="account-dropdown-menu"
+                                th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">
+                                <a th:href="@{/profile}" class="dropdown-item">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span>Thông tin cá nhân</span>
+                                </a>
+                                <a th:href="@{/orders}" class="dropdown-item">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.5">
+                                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    </svg>
+                                    <span>Đơn hàng của tôi</span>
+                                </a>
+                                <hr class="dropdown-divider">
+                                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                                    <button type="submit" class="dropdown-item logout-btn">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.5">
+                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                                        </svg>
+                                        <span>Đăng xuất</span>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Login Link for non-authenticated users -->
+                            <a th:if="${#authentication == null or #authentication.name == 'anonymousUser'}"
+                                th:href="@{/login}"
+                                style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1;"></a>
+                        </div>
+                        <a th:href="@{/cart}" class="header-icon-link cart-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                            <span>Giỏ hàng</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Menu -->
+        <nav class="main-nav">
+            <div class="container">
+                <ul class="nav-menu">
+                    <li class="nav-item sale-item">
+                        <a href="#" class="nav-link sale-link">CANIFA SHOPPING DAY</a>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a th:href="@{/products}" class="nav-link">NỮ</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-col">
+                                    <h4>Áo</h4>
+                                    <ul>
+                                        <li><a href="#">Áo thun</a></li>
+                                        <li><a href="#">Áo sơ mi</a></li>
+                                        <li><a href="#">Áo len</a></li>
+                                        <li><a href="#">Áo khoác</a></li>
+                                        <li><a href="#">Áo hoodie</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h4>Quần</h4>
+                                    <ul>
+                                        <li><a href="#">Quần jean</a></li>
+                                        <li><a href="#">Quần kaki</a></li>
+                                        <li><a href="#">Quần short</a></li>
+                                        <li><a href="#">Quần jogger</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h4>Váy & Đầm</h4>
+                                    <ul>
+                                        <li><a href="#">Váy</a></li>
+                                        <li><a href="#">Đầm</a></li>
+                                        <li><a href="#">Chân váy</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h4>Đồ mặc nhà</h4>
+                                    <ul>
+                                        <li><a href="#">Bộ mặc nhà</a></li>
+                                        <li><a href="#">Đồ ngủ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a th:href="@{/products}" class="nav-link">NAM</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-col">
+                                    <h4>Áo</h4>
+                                    <ul>
+                                        <li><a href="#">Áo thun</a></li>
+                                        <li><a href="#">Áo polo</a></li>
+                                        <li><a href="#">Áo sơ mi</a></li>
+                                        <li><a href="#">Áo khoác</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-col">
+                                    <h4>Quần</h4>
+                                    <ul>
+                                        <li><a href="#">Quần jean</a></li>
+                                        <li><a href="#">Quần kaki</a></li>
+                                        <li><a href="#">Quần short</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a th:href="@{/products}" class="nav-link">BÉ GÁI</a>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a th:href="@{/products}" class="nav-link">BÉ TRAI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">SẢN PHẨM MỚI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">CANIFA S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">LICENSE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">SCHOOL</a>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">ĐỒNG PHỤC</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</body>
+
+</html>

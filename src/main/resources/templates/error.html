@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Lỗi | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container text-center"
+        style="min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 50px 20px;">
+        <div class="error-content">
+            <h1 style="font-size: 80px; color: var(--primary-red); margin-bottom: 20px;">Oops!</h1>
+            <h2 style="margin-bottom: 15px;">Đã có lỗi xảy ra.</h2>
+            <p style="color: #666; margin-bottom: 30px;">Chúng tôi xin lỗi vì sự bất tiện này. Vui lòng thử lại sau.</p>
+
+            <div th:if="${error}"
+                style="padding: 15px; background: #fff5f5; border: 1px solid var(--primary-red); border-radius: 8px; margin-bottom: 30px; display: inline-block;">
+                <span th:text="${error}" style="color: var(--primary-red);">Error Message</span>
+            </div>
+
+            <div class="mt-4">
+                <a href="/"
+                    style="padding: 15px 40px; background: var(--primary-red); color: white; border-radius: 30px; font-weight: 600; display: inline-block;">Quay
+                    về trang chủ</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Đơn hàng của tôi | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <nav class="breadcrumb">
+        <div class="breadcrumb-list"><a href="index.html">Trang chủ</a><span class="breadcrumb-separator">›</span><a
+                href="profile.html">Tài khoản</a><span class="breadcrumb-separator">›</span><span
+                class="breadcrumb-current">Đơn hàng</span></div>
+    </nav>
+
+    <div class="profile-container">
+        <aside class="profile-sidebar">
+            <div class="sidebar-user-info">
+                <div class="sidebar-avatar">👤</div>
+                <p class="sidebar-greeting">Xin chào!</p>
+                <p class="sidebar-name" id="userName" th:text="${user?.fullName ?: 'Khách hàng'}">Khách hàng</p>
+                <div class="sidebar-member-level"><span class="member-badge"></span><span>Hạng Green</span></div>
+            </div>
+            <nav class="sidebar-menu">
+                <a th:href="@{/profile}" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg><span>Thông tin tài khoản</span></a>
+                <a th:href="@{/vouchers}" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg><span>Mã ưu đãi</span><span class="badge">2</span></a>
+                <a th:href="@{/orders}" class="sidebar-menu-item active"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg><span>Đơn hàng</span></a>
+                <a th:href="@{/membership}" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                        <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg><span>Thẻ thành viên</span></a>
+                <a th:href="@{/address}" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg><span>Sổ địa chỉ</span></a>
+                <a href="#" class="sidebar-menu-item logout" onclick="logout(); return false;"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg><span>Đăng xuất</span></a>
+            </nav>
+        </aside>
+
+        <main class="profile-content">
+            <div class="profile-header">
+                <h1 class="profile-title">ĐƠN HÀNG CỦA TÔI</h1>
+            </div>
+
+            <div class="order-tabs">
+                <button class="order-tab active" data-status="all">Tất cả</button>
+                <button class="order-tab" data-status="pending">Chờ xác nhận</button>
+                <button class="order-tab" data-status="processing">Đang xử lý</button>
+                <button class="order-tab" data-status="shipping">Đang giao</button>
+                <button class="order-tab" data-status="delivered">Đã giao</button>
+                <button class="order-tab" data-status="cancelled">Đã hủy</button>
+            </div>
+
+            <div id="ordersContainer">
+                <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
+                    <h3>Chưa có đơn hàng nào</h3>
+                    <a th:href="@{/products}" class="btn-shop">Mua sắm ngay</a>
+                </div>
+                <!-- Dynamic Orders -->
+                <div class="order-card" th:each="order : ${orders}">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-id" th:text="'#' + ${order.id}">#DH2026011601</span>
+                            <span class="order-date"
+                                th:text="' • ' + ${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"> •
+                                16/01/2026</span>
+                        </div>
+                        <span class="order-status delivered" th:text="${order.status}">Đã giao</span>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">Tổng tiền: <span
+                                th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT') + 'đ'}">299,000đ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const user = JSON.parse(localStorage.getItem('canifaUser'));
+            if (!user) { window.location.href = 'index.html'; return; }
+            document.getElementById('userName').textContent = user.name || 'Khách hàng';
+
+            document.querySelectorAll('.order-tab').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

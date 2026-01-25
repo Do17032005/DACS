@@ -1,0 +1,140 @@
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>AI Stylist - CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container mt-4" style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+        <!-- ... existing content ... -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="text-center m-0"><i class="fas fa-robot text-primary me-2"></i>Personal AI Stylist</h2>
+                </div>
+
+                <div class="chat-container mb-3" id="chat-box"
+                    style="height: 60vh; overflow-y: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: 1px solid var(--border-light);">
+                    <div class="message ai-message">
+                        Hello! I'm your fashion assistant. Ask me for outfit advice, trends, or product recommendations!
+                        👗
+                        <span class="timestamp">AI Assistant</span>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typing-indicator"
+                    style="font-style: italic; color: #888; font-size: 12px; margin-left: 10px; display: none; margin-bottom: 10px;">
+                    AI is typing...</div>
+
+                <div class="chat-input-wrapper"
+                    style="display: flex; gap: 10px; background: white; padding: 10px; border-radius: 30px; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+                    <input type="text" id="user-input" placeholder="Type your message here..."
+                        style="flex: 1; padding: 10px 20px; border: none; outline: none; background: transparent;"
+                        onkeypress="handleEnter(event)">
+                    <button onclick="sendMessage()"
+                        style="padding: 10px 25px; background: var(--primary-red); color: white; border-radius: 25px; font-weight: 600;">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Styles -->
+    <style>
+        .message {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-message {
+            background: #DA291C;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            background: #f1f1f1;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .timestamp {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 5px;
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        function handleEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatBox = document.getElementById('chat-box');
+            const typingIndicator = document.getElementById('typing-indicator');
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerHTML = message + '<span class="timestamp">Just now</span>';
+            chatBox.appendChild(userDiv);
+
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+            typingIndicator.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                const text = await response.text();
+
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-message';
+                const formattedText = text.replace(/\n/g, '<br>');
+                aiDiv.innerHTML = formattedText + '<span class="timestamp">AI Assistant</span>';
+
+                chatBox.appendChild(aiDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'message ai-message text-danger';
+                errorDiv.textContent = 'Error connecting to AI.';
+                chatBox.appendChild(errorDiv);
+            } finally {
+                typingIndicator.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

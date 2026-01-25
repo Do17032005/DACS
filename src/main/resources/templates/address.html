@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Sổ địa chỉ | CANIFA</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="profile-container">
+        <aside class="profile-sidebar">
+            <div class="sidebar-user-info">
+                <div class="sidebar-avatar">👤</div>
+                <p class="sidebar-name" id="userName">Khách hàng</p>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/profile" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>Thông tin tài khoản</a>
+                <a href="/vouchers" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <rect x="1" y="5" width="22" height="14" rx="2" />
+                    </svg>Mã ưu đãi</a>
+                <a href="/orders" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    </svg>Đơn hàng</a>
+                <a href="/membership" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <rect x="1" y="4" width="22" height="16" rx="2" />
+                    </svg>Thẻ thành viên</a>
+                <a href="/address" class="sidebar-menu-item active"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>Sổ địa chỉ</a>
+                <a href="#" class="sidebar-menu-item" onclick="logout()"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                    </svg>Đăng xuất</a>
+            </nav>
+        </aside>
+        <main class="profile-content">
+            <div class="profile-header">
+                <h1 class="profile-title">SỔ ĐỊA CHỈ</h1><button class="btn-add" onclick="openModal()">+ Thêm địa
+                    chỉ</button>
+            </div>
+            <div class="address-list" id="addressList">
+                <div class="address-card default">
+                    <p class="address-name">Nguyễn Văn A</p>
+                    <p class="address-phone">📞 0901234567</p>
+                    <p class="address-detail">123 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
+                    <div class="address-actions"><a>Sửa</a><a>Xóa</a></div>
+                </div>
+                <div class="address-card">
+                    <p class="address-name">Nguyễn Văn A (Công ty)</p>
+                    <p class="address-phone">📞 0909876543</p>
+                    <p class="address-detail">Tầng 5, Tòa nhà ABC, 456 Lê Lợi, Quận 1, TP. Hồ Chí Minh</p>
+                    <div class="address-actions"><a>Sửa</a><a>Đặt mặc định</a><a>Xóa</a></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="modal" id="addressModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Thêm địa chỉ mới</h2>
+            <form>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Họ tên</label><input type="text"
+                            class="form-control" placeholder="Họ và tên"></div>
+                    <div class="form-group"><label class="form-label">Số điện thoại</label><input type="tel"
+                            class="form-control" placeholder="Số điện thoại"></div>
+                </div>
+                <div class="form-group"><label class="form-label">Địa chỉ</label><input type="text" class="form-control"
+                        placeholder="Số nhà, tên đường"></div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Tỉnh/Thành phố</label><select
+                            class="form-control">
+                            <option>Chọn Tỉnh/Thành phố</option>
+                            <option>TP. Hồ Chí Minh</option>
+                            <option>Hà Nội</option>
+                            <option>Đà Nẵng</option>
+                        </select></div>
+                    <div class="form-group"><label class="form-label">Quận/Huyện</label><select class="form-control">
+                            <option>Chọn Quận/Huyện</option>
+                        </select></div>
+                </div>
+                <div class="modal-actions"><button type="button" class="btn-cancel"
+                        onclick="closeModal()">Hủy</button><button type="submit" class="btn-save">Lưu địa chỉ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script>
+        const user = JSON.parse(localStorage.getItem('canifaUser'));
+        if (user) document.getElementById('userName').textContent = user.name || 'Khách hàng';
+        function openModal() { document.getElementById('addressModal').classList.add('active'); }
+        function closeModal() { document.getElementById('addressModal').classList.remove('active'); }
+    </script>
+</body>
+
+</html>
