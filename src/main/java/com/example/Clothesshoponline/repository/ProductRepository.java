@@ -34,6 +34,12 @@ public class ProductRepository {
         return jdbcTemplate.query(sql, rowMapper);
     }
 
+    public List<Product> search(String keyword) {
+        String like = "%" + keyword.toLowerCase() + "%";
+        String sql = "SELECT * FROM products WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ?";
+        return jdbcTemplate.query(sql, rowMapper, like, like);
+    }
+
     public Optional<Product> findById(Long id) {
         String sql = "SELECT * FROM products WHERE id = ?";
         List<Product> products = jdbcTemplate.query(sql, rowMapper, id);

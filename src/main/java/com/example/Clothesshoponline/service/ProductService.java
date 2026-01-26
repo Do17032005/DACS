@@ -20,6 +20,13 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> searchProducts(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllProducts();
+        }
+        return productRepository.search(keyword.trim());
+    }
+
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }

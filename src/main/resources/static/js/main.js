@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initBackToTop();
     initMobileMenu();
     initLoginModal();
+    initSearchBar();
 });
 
 /* ===================================
@@ -204,31 +205,31 @@ function initMobileMenu() {
 /* ===================================
    SEARCH FUNCTIONALITY
    =================================== */
-const searchInput = document.querySelector('.search-input');
-if (searchInput) {
-    searchInput.addEventListener('input', function (e) {
-        const query = e.target.value.trim();
+function initSearchBar() {
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
 
-        // Debounce search
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {
-            if (query.length > 2) {
-                // Perform search
-                console.log('Searching for:', query);
-            }
-        }, 300);
-    });
+    if (!searchInput) return;
+
+    const submitSearch = () => {
+        const query = searchInput.value.trim();
+        if (!query) return;
+        window.location.href = `/products?q=${encodeURIComponent(query)}`;
+    };
 
     searchInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
-            const query = this.value.trim();
-            if (query) {
-                console.log('Search submitted:', query);
-                // Redirect to search results page
-                // window.location.href = `/search?q=${encodeURIComponent(query)}`;
-            }
+            e.preventDefault();
+            submitSearch();
         }
     });
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            submitSearch();
+        });
+    }
 }
 
 /* ===================================

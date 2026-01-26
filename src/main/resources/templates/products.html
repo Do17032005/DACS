@@ -336,7 +336,9 @@
         </aside>
 
         <main class="products-main">
-            <div class="products-header"><span class="products-count">Hiển thị 1-24 của 156 sản phẩm</span><select
+                <div class="products-header"><span class="products-count"
+                    th:text="${#lists.isEmpty(products)} ? 'Không có sản phẩm phù hợp' : 'Tìm thấy ' + products.size() + ' sản phẩm' + (query != null && !#strings.isEmpty(query) ? ' cho \"' + query + '\"' : '')">Hiển
+                    thị 1-24 của 156 sản phẩm</span><select
                     class="sort-select">
                     <option>Mới nhất</option>
                     <option>Giá: Thấp đến cao</option>
