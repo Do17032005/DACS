@@ -2,9 +2,11 @@ package com.example.Clothesshoponline.controller;
 
 import com.example.Clothesshoponline.model.Product;
 import com.example.Clothesshoponline.service.ProductService;
+import com.example.Clothesshoponline.service.FileStorageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin")
@@ -14,15 +16,18 @@ public class AdminController {
     private final com.example.Clothesshoponline.repository.UserRepository userRepository;
     private final com.example.Clothesshoponline.service.AuthService authService;
     private final com.example.Clothesshoponline.service.OrderService orderService;
+    private final FileStorageService fileStorageService;
 
     public AdminController(ProductService productService,
             com.example.Clothesshoponline.repository.UserRepository userRepository,
             com.example.Clothesshoponline.service.AuthService authService,
-            com.example.Clothesshoponline.service.OrderService orderService) {
+            com.example.Clothesshoponline.service.OrderService orderService,
+            FileStorageService fileStorageService) {
         this.productService = productService;
         this.userRepository = userRepository;
         this.authService = authService;
         this.orderService = orderService;
+        this.fileStorageService = fileStorageService;
     }
 
     @GetMapping("/dashboard")
@@ -38,7 +43,13 @@ public class AdminController {
     }
 
     @PostMapping("/product/save")
-    public String saveProduct(@ModelAttribute Product product) {
+    public String saveProduct(@ModelAttribute Product product,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String storedPath = fileStorageService.store(imageFile);
+            product.setImageUrl(storedPath);
+        }
+
         productService.saveProduct(product);
         return "redirect:/admin/dashboard";
     }

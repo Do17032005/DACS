@@ -16,7 +16,8 @@
                             Form</h3>
                     </div>
                     <div class="card-body p-4">
-                        <form th:action="@{/admin/product/save}" th:object="${product}" method="post">
+                        <form th:action="@{/admin/product/save}" th:object="${product}" method="post"
+                            enctype="multipart/form-data">
                             <input type="hidden" th:field="*{id}">
 
                             <div class="mb-3">
@@ -45,6 +46,21 @@
                                     <label class="form-label fw-bold">Stock</label>
                                     <input type="number" class="form-control" th:field="*{stock}" required>
                                 </div>
+                            </div>
+
+                            <div class="mb-3" th:if="${product.imageUrl}">
+                                <label class="form-label fw-bold">Current Image</label>
+                                <div class="border rounded p-2 text-center">
+                                    <img th:src="${product.imageUrl}" class="img-fluid" style="max-height: 200px;"
+                                        alt="Current product image">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Upload Image</label>
+                                <input type="file" class="form-control" name="imageFile" accept="image/*">
+                                <small class="text-muted">Leave empty to keep the current image or use the URL field
+                                    below.</small>
                             </div>
 
                             <div class="mb-3">
