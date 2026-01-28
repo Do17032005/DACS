@@ -176,7 +176,9 @@
                                     <div class="mb-3" th:if="${product.additionalImages != null and !product.additionalImages.isEmpty()}">
                                         <label class="form-label fw-bold">Hình phụ hiện tại</label>
                                         <div class="d-flex flex-wrap gap-2">
-                                            <div th:each="img : ${product.additionalImages.split(',')}" class="border rounded p-1 text-center bg-white" style="width: 80px;">
+                                            <div th:each="img : ${#arrays.stream(product.additionalImages.split(','))
+                                                .filter(i -> i != null && !i.trim().isEmpty()).toList()}"
+                                                class="border rounded p-1 text-center bg-white" style="width: 80px;">
                                                 <img th:src="${img}" class="img-fluid rounded" style="max-height: 60px;" alt="Additional image">
                                             </div>
                                         </div>

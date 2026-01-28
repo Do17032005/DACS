@@ -55,7 +55,8 @@ public class AdminController {
     @Autowired
     private com.example.Clothesshoponline.service.CategoryService categoryService;
 
-    private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+    // Lưu file upload ra ngoài target để không bị mất khi build lại
+    private final String UPLOAD_DIR = "uploads/";
 
     @GetMapping("/dashboard")
     public String dashboard(
@@ -247,13 +248,13 @@ public class AdminController {
             }
 
             // Handle additional images upload
+            List<String> additionalUrls = new ArrayList<>();
+            // 1. Nếu có upload file hình phụ
             if (additionalImageFiles != null && !additionalImageFiles.isEmpty()) {
-                List<String> additionalUrls = new ArrayList<>();
                 Path uploadPath = Paths.get(UPLOAD_DIR);
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
-
                 for (MultipartFile additionalFile : additionalImageFiles) {
                     if (additionalFile != null && !additionalFile.isEmpty()) {
                         String originalFilename = FileUploadValidator
@@ -264,14 +265,21 @@ public class AdminController {
                         additionalUrls.add("/uploads/" + fileName);
                     }
                 }
-
-                if (!additionalUrls.isEmpty()) {
-                    String existingImages = product.getAdditionalImages();
-                    if (existingImages != null && !existingImages.trim().isEmpty()) {
-                        additionalUrls.add(0, existingImages);
+            }
+            // 2. Nếu có nhập URL hình phụ thủ công (ô text), thêm vào danh sách
+            String manualAdditional = product.getAdditionalImages();
+            if (manualAdditional != null && !manualAdditional.trim().isEmpty()) {
+                for (String url : manualAdditional.split(",")) {
+                    if (url != null && !url.trim().isEmpty()) {
+                        additionalUrls.add(url.trim());
                     }
-                    product.setAdditionalImages(String.join(",", additionalUrls));
                 }
+            }
+            // 3. Gán lại cho product nếu có ảnh phụ
+            if (!additionalUrls.isEmpty()) {
+                product.setAdditionalImages(String.join(",", additionalUrls));
+            } else {
+                product.setAdditionalImages("");
             }
 
             // Set createdAt for new products
@@ -283,7 +291,7 @@ public class AdminController {
             }
 
             productService.saveProduct(product);
-            redirectAttributes.addFlashAttribute("success", "Lưu sản phẩm thành công!");
+            redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm thành công!");
             return "redirect:/admin/dashboard";
         } catch (IOException e) {
             model.addAttribute("error", "Lỗi khi upload file: " + e.getMessage());

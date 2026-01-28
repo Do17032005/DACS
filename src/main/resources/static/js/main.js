@@ -253,7 +253,7 @@ function initSearchBar() {
     const submitSearch = () => {
         const query = searchInput.value.trim();
         if (!query) return;
-        window.location.href = `/products?q=${encodeURIComponent(query)}`;
+        window.location.href = `/products?search=${encodeURIComponent(query)}`;
     };
 
     searchInput.addEventListener('keypress', function (e) {
