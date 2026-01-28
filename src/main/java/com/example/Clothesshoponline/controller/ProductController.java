@@ -90,6 +90,16 @@ public class ProductController {
 
         // Get all filter options for sidebar
         List<String> allCategories = productService.getAllCategories();
+        log.info("=== DEBUG CATEGORIES IN PRODUCT CONTROLLER ===");
+        log.info("Categories list size: {}", allCategories.size());
+        for (int i = 0; i < allCategories.size(); i++) {
+            String cat = allCategories.get(i);
+            log.info("Category {}: [{}] (length: {})", i + 1, cat, cat.length());
+            log.info("Category {} bytes: {}", i + 1,
+                    java.util.Arrays.toString(cat.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        }
+        log.info("=== END DEBUG CATEGORIES ===");
+
         List<String> allBrands = productService.getAllBrands();
         List<String> allMaterials = productService.getAllMaterials();
         List<String> allColors = productService.getAllColors();

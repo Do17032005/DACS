@@ -155,14 +155,3 @@ Sau đó chỉnh sửa file `.env` với thông tin database của bạn.
 - [Setup Environment Variables](./ENVIRONMENT_SETUP.md) - Hướng dẫn chi tiết về cấu hình env vars
 - [Spring Boot Documentation](https://spring.io/projects/spring-boot)
 
-
-QUAN TRỌNG - SỬA TRONG TUẦN NÀY:
-✅ Thêm forgot password
-✅ Thêm email verification
-✅ Thêm rate limiting
-✅ Validate file uploads
-CẢI THIỆN - LÀM THEO KẾ HOẠCH:
-✅ Thêm wishlist
-✅ Cải thiện error messages
-✅ Thêm caching
-✅ Tối ưu images

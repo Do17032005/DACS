@@ -106,19 +106,21 @@
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label fw-bold">Giá bán <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="number" step="1000" class="form-control" th:field="*{price}" 
+                                                <input type="text" class="form-control" th:field="*{price}" 
                                                        th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'" 
-                                                       required placeholder="0">
+                                                       required placeholder="199000" pattern="[0-9]+">
                                                 <span class="input-group-text">đ</span>
                                             </div>
                                             <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                            <small class="text-muted">Chỉ nhập số, VD: 199000</small>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label fw-bold">Giá gốc</label>
                                             <div class="input-group">
-                                                <input type="number" step="1000" class="form-control" th:field="*{originalPrice}" placeholder="0">
+                                                <input type="text" class="form-control" th:field="*{originalPrice}" placeholder="299000" pattern="[0-9]*">
                                                 <span class="input-group-text">đ</span>
                                             </div>
+                                            <small class="text-muted">Để trống nếu không có</small>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label fw-bold">Giảm giá</label>

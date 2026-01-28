@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -21,6 +22,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryService categoryService;
 
     private Sort getSortFromString(String sortType) {
         return switch (sortType) {
@@ -150,7 +154,17 @@ public class ProductService {
     }
 
     public List<String> getAllCategories() {
-        return productRepository.findAllCategories();
+        // Get active categories from categories table instead of products table
+        List<com.example.Clothesshoponline.model.Category> categories = categoryService.getAllCategories();
+        log.info("Total categories from CategoryService: {}", categories.size());
+
+        List<String> activeCategories = categories.stream()
+                .filter(category -> category.isActive())
+                .map(category -> category.getName())
+                .collect(Collectors.toList());
+
+        log.info("Active categories count: {}, Names: {}", activeCategories.size(), activeCategories);
+        return activeCategories;
     }
 
     public List<String> getAllBrands() {

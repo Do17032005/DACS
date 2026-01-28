@@ -1,17 +1,18 @@
 package com.example.Clothesshoponline.controller;
 
-import com.example.Clothesshoponline.model.Category;
 import com.example.Clothesshoponline.model.Order;
 import com.example.Clothesshoponline.model.Product;
 import com.example.Clothesshoponline.model.User;
 import com.example.Clothesshoponline.model.Voucher;
-import com.example.Clothesshoponline.service.CategoryService;
+
 import com.example.Clothesshoponline.service.OrderService;
 import com.example.Clothesshoponline.service.ProductService;
 import com.example.Clothesshoponline.service.UserService;
 import com.example.Clothesshoponline.service.VoucherService;
 import com.example.Clothesshoponline.util.FileUploadValidator;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
+    private static final Logger log = LoggerFactory.getLogger(AdminController.class);
+
     @Autowired
     private ProductService productService;
 
@@ -50,7 +53,7 @@ public class AdminController {
     private VoucherService voucherService;
 
     @Autowired
-    private CategoryService categoryService;
+    private com.example.Clothesshoponline.service.CategoryService categoryService;
 
     private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
@@ -169,7 +172,8 @@ public class AdminController {
     @GetMapping("/product/add")
     public String addProductForm(Model model) {
         Product product = new Product();
-        model.addAttribute("categories", categoryService.getActiveCategories());
+        model.addAttribute("product", product);
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "admin/product_form";
     }
 
@@ -177,7 +181,7 @@ public class AdminController {
     public String editProductForm(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
-        model.addAttribute("categories", categoryService.getActiveCategories());
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "admin/product_form";
     }
 
@@ -190,9 +194,14 @@ public class AdminController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
+        log.info("=== SAVE PRODUCT REQUEST ===");
+        log.info("Product: name={}, category={}, price={}", product.getName(), product.getCategory(),
+                product.getPrice());
+
         if (result.hasErrors()) {
+            log.error("Validation errors: {}", result.getAllErrors());
             model.addAttribute("product", product);
-            model.addAttribute("categories", categoryService.getActiveCategories());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "admin/product_form";
         }
 
@@ -201,7 +210,7 @@ public class AdminController {
         if (!imageValidation.isValid()) {
             model.addAttribute("error", imageValidation.getErrorMessage());
             model.addAttribute("product", product);
-            model.addAttribute("categories", categoryService.getActiveCategories());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "admin/product_form";
         }
 
@@ -210,7 +219,7 @@ public class AdminController {
         if (!additionalImagesValidation.isValid()) {
             model.addAttribute("error", additionalImagesValidation.getErrorMessage());
             model.addAttribute("product", product);
-            model.addAttribute("categories", categoryService.getActiveCategories());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "admin/product_form";
         }
 
@@ -279,7 +288,7 @@ public class AdminController {
         } catch (IOException e) {
             model.addAttribute("error", "Lỗi khi upload file: " + e.getMessage());
             model.addAttribute("product", product);
-            model.addAttribute("categories", categoryService.getActiveCategories());
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "admin/product_form";
         }
     }
@@ -464,5 +473,35 @@ public class AdminController {
     public String deleteVoucher(@PathVariable Long id) {
         voucherService.deleteVoucher(id);
         return "redirect:/admin/vouchers";
+    }
+
+    @GetMapping("/debug/categories")
+    @ResponseBody
+    public String debugCategories() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== CATEGORY DEBUG ===\n");
+
+        try {
+            List<com.example.Clothesshoponline.model.Category> allCategories = categoryService.getAllCategories();
+            sb.append("Total categories found: ").append(allCategories.size()).append("\n\n");
+
+            for (com.example.Clothesshoponline.model.Category cat : allCategories) {
+                sb.append("ID: ").append(cat.getId()).append("\n");
+                sb.append("Name: [").append(cat.getName()).append("]\n");
+                sb.append("Is Active: ").append(cat.isActive()).append("\n");
+                sb.append("Display Order: ").append(cat.getDisplayOrder()).append("\n");
+                sb.append("Name bytes: ");
+                for (byte b : cat.getName().getBytes()) {
+                    sb.append(String.format("0x%02X ", b));
+                }
+                sb.append("\n");
+                sb.append("---\n");
+            }
+        } catch (Exception e) {
+            sb.append("ERROR: ").append(e.getMessage()).append("\n");
+            e.printStackTrace();
+        }
+
+        return sb.toString();
     }
 }
