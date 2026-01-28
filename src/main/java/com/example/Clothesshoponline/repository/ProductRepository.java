@@ -1,63 +1,90 @@
 package com.example.Clothesshoponline.repository;
 
 import com.example.Clothesshoponline.model.Product;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Long> {
+        List<Product> findByCategory(String category);
 
-    private final JdbcTemplate jdbcTemplate;
+        Page<Product> findByCategory(String category, Pageable pageable);
 
-    public ProductRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+        // Tìm sản phẩm theo tên để update
+        java.util.Optional<Product> findByName(String name);
 
-    private final RowMapper<Product> rowMapper = (rs, rowNum) -> {
-        Product product = new Product();
-        product.setId(rs.getLong("id"));
-        product.setName(rs.getString("name"));
-        product.setPrice(rs.getBigDecimal("price"));
-        product.setDescription(rs.getString("description"));
-        product.setImageUrl(rs.getString("image_url"));
-        product.setCategory(rs.getString("category"));
-        product.setStock(rs.getInt("stock"));
-        return product;
-    };
+        @Query("SELECT p FROM Product p WHERE p.isBestseller = true")
+        List<Product> findBestsellers();
 
-    public List<Product> findAll() {
-        String sql = "SELECT * FROM products";
-        return jdbcTemplate.query(sql, rowMapper);
-    }
+        @Query("SELECT p FROM Product p WHERE p.isBestseller = true")
+        Page<Product> findBestsellers(Pageable pageable);
 
-    public List<Product> search(String keyword) {
-        String like = "%" + keyword.toLowerCase() + "%";
-        String sql = "SELECT * FROM products WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ?";
-        return jdbcTemplate.query(sql, rowMapper, like, like);
-    }
+        @Query("SELECT p FROM Product p WHERE p.isNew = true")
+        List<Product> findNewProducts();
 
-    public Optional<Product> findById(Long id) {
-        String sql = "SELECT * FROM products WHERE id = ?";
-        List<Product> products = jdbcTemplate.query(sql, rowMapper, id);
-        return products.stream().findFirst();
-    }
+        @Query("SELECT p FROM Product p WHERE p.isNew = true")
+        Page<Product> findNewProducts(Pageable pageable);
 
-    public void save(Product product) {
-        if (product.getId() == null) {
-            String sql = "INSERT INTO products (name, price, description, image_url, category, stock) VALUES (?, ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getCategory(), product.getStock());
-        } else {
-            String sql = "UPDATE products SET name = ?, price = ?, description = ?, image_url = ?, category = ?, stock = ? WHERE id = ?";
-            jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getDescription(), product.getImageUrl(), product.getCategory(), product.getStock(), product.getId());
-        }
-    }
+        @Query("SELECT p FROM Product p WHERE " +
+                        "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(p.category) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+        List<Product> searchProducts(@Param("keyword") String keyword);
 
-    public void deleteById(Long id) {
-        String sql = "DELETE FROM products WHERE id = ?";
-        jdbcTemplate.update(sql, id);
-    }
+        @Query("SELECT p FROM Product p WHERE " +
+                        "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+                        "LOWER(p.category) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+        Page<Product> searchProducts(@Param("keyword") String keyword, Pageable pageable);
+
+        @Query("SELECT p FROM Product p WHERE " +
+                        "(:category IS NULL OR p.category = :category) AND " +
+                        "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
+                        "(:maxPrice IS NULL OR p.price <= :maxPrice)")
+        List<Product> findByFilters(
+                        @Param("category") String category,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice);
+
+        @Query("SELECT p FROM Product p WHERE " +
+                        "(:category IS NULL OR :category = '' OR p.category = :category) AND " +
+                        "(:subcategory IS NULL OR :subcategory = '' OR LOWER(TRIM(p.subcategory)) = LOWER(TRIM(:subcategory))) AND "
+                        +
+                        "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
+                        "(:maxPrice IS NULL OR p.price <= :maxPrice) AND " +
+                        "(:size IS NULL OR :size = '' OR p.availableSizes LIKE CONCAT('%', :size, '%')) AND " +
+                        "(:color IS NULL OR :color = '' OR LOWER(p.color) LIKE LOWER(CONCAT('%', :color, '%'))) AND " +
+                        "(:brand IS NULL OR :brand = '' OR LOWER(p.brand) LIKE LOWER(CONCAT('%', :brand, '%'))) AND " +
+                        "(:material IS NULL OR :material = '' OR LOWER(p.material) LIKE LOWER(CONCAT('%', :material, '%'))) AND "
+                        +
+                        "(:name IS NULL OR :name = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))")
+        Page<Product> filterProducts(
+                        @Param("category") String category,
+                        @Param("subcategory") String subcategory,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice,
+                        @Param("size") String size,
+                        @Param("color") String color,
+                        @Param("brand") String brand,
+                        @Param("material") String material,
+                        @Param("name") String name,
+                        Pageable pageable);
+
+        @Query("SELECT DISTINCT p.category FROM Product p WHERE p.category IS NOT NULL ORDER BY p.category")
+        List<String> findAllCategories();
+
+        @Query("SELECT DISTINCT p.brand FROM Product p WHERE p.brand IS NOT NULL AND p.brand != '' ORDER BY p.brand")
+        List<String> findAllBrands();
+
+        @Query("SELECT DISTINCT p.material FROM Product p WHERE p.material IS NOT NULL AND p.material != '' ORDER BY p.material")
+        List<String> findAllMaterials();
+
+        @Query("SELECT DISTINCT p.color FROM Product p WHERE p.color IS NOT NULL AND p.color != '' ORDER BY p.color")
+        List<String> findAllColors();
 }

@@ -3,6 +3,9 @@
    =================================== */
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Load saved content from database first
+    loadSavedSiteContent();
+    
     // Initialize all components
     initSubHeaderSlider();
     initHeroSlider();
@@ -15,6 +18,42 @@ document.addEventListener('DOMContentLoaded', function () {
     initLoginModal();
     initSearchBar();
 });
+
+/* ===================================
+   LOAD SAVED SITE CONTENT
+   =================================== */
+async function loadSavedSiteContent() {
+    try {
+        const response = await fetch('/api/content');
+        if (!response.ok) return;
+        
+        const contentMap = await response.json();
+        
+        // Apply to elements with data-editable attribute (text/image)
+        document.querySelectorAll('[data-editable]').forEach(el => {
+            const key = el.dataset.editable;
+            if (contentMap[key]) {
+                if (el.tagName === 'IMG') {
+                    el.src = contentMap[key];
+                } else {
+                    el.innerHTML = contentMap[key];
+                }
+            }
+        });
+        
+        // Apply to elements with data-editable-link attribute (links)
+        document.querySelectorAll('[data-editable-link]').forEach(el => {
+            const key = el.dataset.editableLink;
+            if (contentMap[key]) {
+                el.href = contentMap[key];
+            }
+        });
+        
+        console.log('📦 Site content loaded');
+    } catch (error) {
+        console.error('Error loading site content:', error);
+    }
+}
 
 /* ===================================
    SUB HEADER SLIDER

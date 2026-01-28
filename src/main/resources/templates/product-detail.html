@@ -250,6 +250,298 @@
             gap: 20px;
         }
 
+        /* Review Section Styles */
+        .review-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .review-summary {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .average-rating {
+            text-align: center;
+        }
+
+        .average-score {
+            font-size: 48px;
+            font-weight: 800;
+            color: #DA291C;
+            line-height: 1;
+        }
+
+        .average-stars {
+            color: #f5a623;
+            font-size: 20px;
+            margin: 5px 0;
+        }
+
+        .total-reviews {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .rating-bars {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .rating-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .rating-bar-label {
+            width: 60px;
+            color: #666;
+        }
+
+        .rating-bar-track {
+            flex: 1;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            background: #f5a623;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .rating-bar-count {
+            width: 30px;
+            text-align: right;
+            color: #999;
+        }
+
+        .review-form-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .review-form-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .star-rating-input {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .star-rating-input input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating-input label {
+            font-size: 32px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star-rating-input label:hover,
+        .star-rating-input label:hover ~ label,
+        .star-rating-input input:checked ~ label {
+            color: #f5a623;
+        }
+
+        .star-rating-input:hover label {
+            color: #ddd;
+        }
+
+        .star-rating-input label:hover,
+        .star-rating-input label:hover ~ label {
+            color: #f5a623;
+        }
+
+        .review-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .review-textarea:focus {
+            outline: none;
+            border-color: #DA291C;
+        }
+
+        .btn-submit-review {
+            padding: 12px 30px;
+            background: #DA291C;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit-review:hover {
+            background: #b52218;
+        }
+
+        .reviews-list {
+            margin-top: 30px;
+        }
+
+        .review-item {
+            padding: 25px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-header-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #DA291C, #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .reviewer-details {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review-stars {
+            color: #f5a623;
+            font-size: 14px;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .review-content {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+            margin-left: 57px;
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .no-reviews-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .login-to-review {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-to-review a {
+            color: #DA291C;
+            font-weight: 600;
+        }
+
+        .already-reviewed {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #155724;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
         @media (max-width: 900px) {
             .product-container {
                 grid-template-columns: 1fr;
@@ -257,6 +549,16 @@
 
             .related-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .review-summary {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .review-content {
+                margin-left: 0;
+                margin-top: 12px;
             }
         }
     </style>
@@ -266,38 +568,52 @@
     <div th:replace="~{fragments/header :: header}"></div>
 
     <div class="product-detail">
-        <div class="breadcrumb"><a href="index.html">Trang chủ</a><span>›</span><a
-                href="products.html">Nữ</a><span>›</span><a href="#">Áo thun</a><span>›</span><span>Áo Thun Nữ Phối
-                Màu</span></div>
+        <div class="breadcrumb"><a th:href="@{/}">Trang chủ</a><span>›</span><a
+                th:href="@{/products(category=${product.category})}" th:text="${product.category}">Danh mục</a><span>›</span><span th:text="${product.name}">Tên sản phẩm</span></div>
 
         <div class="product-container">
             <div class="product-gallery">
                 <div class="main-image"><img th:src="${product.imageUrl}" th:alt="${product.name}" id="mainImage"></div>
                 <div class="thumbnail-list">
-                    <div class="thumbnail active"
-                        onclick="changeImage(this, 'https://media.canifa.com/catalog/product/cache/400x/6TS24W003-SJ146-L.webp')">
-                        <img src="https://media.canifa.com/catalog/product/cache/400x/6TS24W003-SJ146-L.webp">
+                    <!-- Main image thumbnail -->
+                    <div class="thumbnail active" th:data-img="${product.imageUrl}" onclick="changeImage(this)">
+                        <img th:src="${product.imageUrl}" alt="Main">
                     </div>
-                    <div class="thumbnail"
-                        onclick="changeImage(this, 'https://media.canifa.com/catalog/product/cache/400x/6AT24W011-SK010-L.webp')">
-                        <img src="https://media.canifa.com/catalog/product/cache/400x/6AT24W011-SK010-L.webp">
-                    </div>
-                    <div class="thumbnail"
-                        onclick="changeImage(this, 'https://media.canifa.com/catalog/product/cache/400x/6AL24W001-SK055-L.webp')">
-                        <img src="https://media.canifa.com/catalog/product/cache/400x/6AL24W001-SK055-L.webp">
-                    </div>
+                    <!-- Additional images thumbnails -->
+                    <th:block th:if="${product.additionalImages != null and !product.additionalImages.isEmpty()}">
+                        <div th:each="img : ${product.additionalImages.split(',')}" 
+                             class="thumbnail" th:data-img="${img}" onclick="changeImage(this)">
+                            <img th:src="${img}" alt="Additional">
+                        </div>
+                    </th:block>
                 </div>
             </div>
 
             <div class="product-info">
                 <h1 th:text="${product.name}">Áo Thun Nữ Phối Màu</h1>
                 <p class="product-sku" th:text="'SKU: ' + ${product.id}">SKU: 6TS24W003-SJ146</p>
-                <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(128 đánh
-                        giá)</span></div>
+                <div class="product-rating">
+                    <span class="stars" th:each="i : ${#numbers.sequence(1, 5)}">
+                        <span th:if="${i <= averageRating}">★</span>
+                        <span th:unless="${i <= averageRating}">☆</span>
+                    </span>
+                    <span class="rating-count" th:text="'(' + ${reviewCount} + ' đánh giá)'">（128 đánh giá)</span>
+                </div>
 
                 <div class="product-price-section">
-                    <div class="price-row"><span class="current-price"
+                    <div class="price-row">
+                        <span class="current-price"
                             th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}">299,000đ</span>
+                        <!-- Original price if discount exists -->
+                        <span th:if="${product.originalPrice != null and product.discountPercent > 0}" 
+                              class="ms-3 text-muted text-decoration-line-through" 
+                              style="font-size: 1.2rem;"
+                              th:text="${#numbers.formatDecimal(product.originalPrice, 0, 'COMMA', 0, 'POINT') + 'đ'}">399,000đ</span>
+                        <!-- Discount badge -->
+                        <span th:if="${product.discountPercent != null and product.discountPercent > 0}" 
+                              class="badge bg-danger ms-2" 
+                              style="font-size: 1rem; padding: 0.5rem 1rem;"
+                              th:text="'-' + ${product.discountPercent} + '%'">-25%</span>
                     </div>
                 </div>
 
@@ -333,10 +649,13 @@
                 </div>
 
                 <div class="action-buttons">
-                    <form th:action="@{/order/place}" method="post" style="display: flex; gap: 15px; flex: 1;">
+                    <button type="button" class="btn-add-cart" onclick="addToCart()" style="flex: 1; background: #333;">🛒 Thêm vào giỏ</button>
+                    <form th:action="@{/cart/buy-now}" method="post" style="flex: 1;">
                         <input type="hidden" name="productId" th:value="${product.id}">
                         <input type="hidden" name="quantity" id="formQty" value="1">
-                        <button type="submit" class="btn-add-cart">🛒 Mua ngay</button>
+                        <input type="hidden" name="size" id="formSize" value="M">
+                        <input type="hidden" name="color" id="formColor" value="Mặc định">
+                        <button type="submit" class="btn-add-cart" style="width: 100%;">⚡ Mua ngay</button>
                     </form>
                     <button class="btn-wishlist">♡</button>
                 </div>
@@ -401,23 +720,241 @@
                 </a>
             </div>
         </section>
+
+        <!-- Review Section -->
+        <section class="review-section">
+            <h2 class="section-title">⭐ Đánh giá sản phẩm</h2>
+            
+            <!-- Flash Messages -->
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+            
+            <!-- Review Summary -->
+            <div class="review-header">
+                <div class="review-summary">
+                    <div class="average-rating">
+                        <div class="average-score" th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">4.5</div>
+                        <div class="average-stars">
+                            <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                <span th:if="${i <= averageRating}">★</span>
+                                <span th:unless="${i <= averageRating}">☆</span>
+                            </span>
+                        </div>
+                        <div class="total-reviews" th:text="${reviewCount} + ' đánh giá'">128 đánh giá</div>
+                    </div>
+                    <div class="rating-bars">
+                        <div class="rating-bar-item" th:each="i : ${#numbers.sequence(5, 1, -1)}">
+                            <span class="rating-bar-label" th:text="${i} + ' sao'">5 sao</span>
+                            <div class="rating-bar-track">
+                                <div class="rating-bar-fill" 
+                                     th:style="'width: ' + (${reviewCount > 0} ? (${ratingStats[i] != null ? ratingStats[i] : 0} * 100 / ${reviewCount}) : 0) + '%'"></div>
+                            </div>
+                            <span class="rating-bar-count" th:text="${ratingStats[i] != null ? ratingStats[i] : 0}">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Review Form -->
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <div th:if="${hasReviewed}" class="already-reviewed">
+                    ✅ Bạn đã đánh giá sản phẩm này. Cảm ơn bạn!
+                </div>
+                <div th:unless="${hasReviewed}" class="review-form-container">
+                    <h3 class="review-form-title">Viết đánh giá của bạn</h3>
+                    <form th:action="@{'/products/' + ${product.id} + '/review'}" method="post">
+                        <div class="star-rating-input">
+                            <span style="margin-right: 10px; font-weight: 600;">Đánh giá:</span>
+                            <input type="radio" name="rating" value="5" id="star5" required>
+                            <label for="star5">★</label>
+                            <input type="radio" name="rating" value="4" id="star4">
+                            <label for="star4">★</label>
+                            <input type="radio" name="rating" value="3" id="star3">
+                            <label for="star3">★</label>
+                            <input type="radio" name="rating" value="2" id="star2">
+                            <label for="star2">★</label>
+                            <input type="radio" name="rating" value="1" id="star1">
+                            <label for="star1">★</label>
+                        </div>
+                        <textarea name="comment" class="review-textarea" placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..." required></textarea>
+                        <button type="submit" class="btn-submit-review">Gửi đánh giá</button>
+                    </form>
+                </div>
+            </div>
+            <div th:unless="${#authorization.expression('isAuthenticated()')}" class="login-to-review">
+                💡 Vui lòng <a th:href="@{/login}">đăng nhập</a> để đánh giá sản phẩm
+            </div>
+            
+            <!-- Reviews List -->
+            <div class="reviews-list">
+                <div th:if="${reviews.isEmpty()}" class="no-reviews">
+                    <div class="no-reviews-icon">💬</div>
+                    <p>Chưa có đánh giá nào cho sản phẩm này</p>
+                    <p>Hãy là người đầu tiên đánh giá!</p>
+                </div>
+                
+                <div th:each="review : ${reviews}" class="review-item">
+                    <div class="review-header-item">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar" th:text="${review.user.fullName != null ? review.user.fullName.substring(0, 1).toUpperCase() : 'U'}">K</div>
+                            <div class="reviewer-details">
+                                <span class="reviewer-name" th:text="${review.user.fullName != null ? review.user.fullName : review.user.username}">Khách hàng</span>
+                                <span class="review-stars">
+                                    <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <span th:if="${i <= review.rating}">★</span>
+                                        <span th:unless="${i <= review.rating}">☆</span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <span th:if="${review.verified}" class="verified-badge">✓ Đã mua hàng</span>
+                            <div class="review-date" th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm')}">10/01/2025</div>
+                            
+                            <!-- Edit/Delete buttons for review owner -->
+                            <div th:if="${currentUser != null and currentUser.id == review.user.id}" class="mt-2">
+                                <button class="btn btn-sm btn-outline-primary" 
+                                        th:onclick="'editReview(' + ${review.id} + ', ' + ${review.rating} + ', \'' + ${review.comment} + '\')'">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </button>
+                                <a th:href="@{/products/{pid}/review/{rid}/delete(pid=${product.id},rid=${review.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Bạn có chắc muốn xóa đánh giá này?')">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-content" th:text="${review.comment}">
+                        Sản phẩm rất đẹp, chất lượng tốt. Giao hàng nhanh, đóng gói cẩn thận.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Review Modal -->
+    <div id="editReviewModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%;">
+            <h3 style="margin-top: 0;">Sửa Đánh Giá</h3>
+            <form id="editReviewForm" method="post">
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; margin-bottom: 5px; display: block;">Đánh giá:</label>
+                    <div class="star-rating-input" id="editStarRating">
+                        <input type="radio" name="rating" value="5" id="editStar5" required>
+                        <label for="editStar5">★</label>
+                        <input type="radio" name="rating" value="4" id="editStar4">
+                        <label for="editStar4">★</label>
+                        <input type="radio" name="rating" value="3" id="editStar3">
+                        <label for="editStar3">★</label>
+                        <input type="radio" name="rating" value="2" id="editStar2">
+                        <label for="editStar2">★</label>
+                        <input type="radio" name="rating" value="1" id="editStar1">
+                        <label for="editStar1">★</label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; margin-bottom: 5px; display: block;">Nội dung:</label>
+                    <textarea name="comment" id="editComment" class="review-textarea" required style="width: 100%; min-height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" onclick="closeEditModal()" class="btn btn-secondary">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
-    <script>
-        function changeImage(el, src) { document.getElementById('mainImage').src = src; document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
+    <script th:inline="javascript">
+        const productId = /*[[${product.id}]]*/ 1;
+        
+        function changeImage(el) { 
+            const src = el.getAttribute('data-img'); 
+            document.getElementById('mainImage').src = src; 
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active')); 
+            el.classList.add('active'); 
+        }
         function changeQty(delta) { const input = document.getElementById('qtyInput'); input.value = Math.max(1, parseInt(input.value) + delta); document.getElementById('formQty').value = input.value; }
+        
+        function editReview(reviewId, rating, comment) {
+            // Set form action
+            document.getElementById('editReviewForm').action = `/products/${productId}/review/${reviewId}/edit`;
+            
+            // Set current values
+            document.getElementById('editStar' + rating).checked = true;
+            document.getElementById('editComment').value = comment;
+            
+            // Show modal
+            document.getElementById('editReviewModal').style.display = 'flex';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editReviewModal').style.display = 'none';
+        }
+        
+        // Close modal on outside click
+        document.getElementById('editReviewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+        
         function addToCart() {
             const qty = parseInt(document.getElementById('qtyInput').value);
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push({ id: 1, name: 'Áo Thun Nữ Phối Màu', price: 299000, qty, image: 'https://media.canifa.com/catalog/product/cache/400x/6TS24W003-SJ146-L.webp', color: 'Xanh Navy', size: 'M' });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
-            showToast('Đã thêm vào giỏ hàng!', 'success');
+            const size = document.getElementById('formSize').value;
+            const color = document.getElementById('formColor').value;
+            
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'productId=' + productId + '&quantity=' + qty + '&size=' + encodeURIComponent(size) + '&color=' + encodeURIComponent(color)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Đã thêm vào giỏ hàng!', 'success');
+                    // Update cart count in header
+                    const cartCount = document.getElementById('cartCount');
+                    if (cartCount) {
+                        cartCount.textContent = data.cartSize || parseInt(cartCount.textContent || 0) + 1;
+                    }
+                } else {
+                    showToast(data.message || 'Có lỗi xảy ra', 'error');
+                }
+            })
+            .catch(() => showToast('Có lỗi xảy ra', 'error'));
         }
-        function buyNow() { addToCart(); window.location.href = '/cart'; }
-        document.querySelectorAll('.color-btn').forEach(btn => btn.onclick = function () { document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); });
-        document.querySelectorAll('.size-btn:not(.disabled)').forEach(btn => btn.onclick = function () { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); });
+        
+        function buyNow() { 
+            // Submit form directly for buy now
+            document.querySelector('form[action="/cart/buy-now"]').submit();
+        }
+        
+        document.querySelectorAll('.color-btn').forEach(btn => btn.onclick = function () { 
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active')); 
+            this.classList.add('active'); 
+            document.getElementById('formColor').value = this.style.background || 'Mặc định';
+        });
+        document.querySelectorAll('.size-btn:not(.disabled)').forEach(btn => btn.onclick = function () { 
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active')); 
+            this.classList.add('active'); 
+            document.getElementById('formSize').value = this.textContent;
+        });
+        
+        // Star rating input handling
+        document.querySelectorAll('.star-rating-input label').forEach((label, index, labels) => {
+            label.addEventListener('click', function() {
+                const value = 5 - index; // Reverse order
+                document.querySelectorAll('.star-rating-input label').forEach((l, i) => {
+                    if (i >= index) {
+                        l.style.color = '#f5a623';
+                    } else {
+                        l.style.color = '#ddd';
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

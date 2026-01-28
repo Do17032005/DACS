@@ -248,7 +248,7 @@
         <aside class="profile-sidebar">
             <div class="sidebar-user-info">
                 <div class="sidebar-avatar">👤</div>
-                <p class="sidebar-name" id="userName">Khách hàng</p>
+                <p class="sidebar-name" id="userName" th:text="${user?.fullName ?: 'Khách hàng'}">Khách hàng</p>
             </div>
             <nav class="sidebar-menu">
                 <a href="/profile" class="sidebar-menu-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -274,11 +274,15 @@
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                         <circle cx="12" cy="10" r="3" />
                     </svg>Sổ địa chỉ</a>
-                <a href="#" class="sidebar-menu-item" onclick="logout()"><svg viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1.5">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <polyline points="16 17 21 12 16 7" />
-                    </svg>Đăng xuất</a>
+                <form th:action="@{/logout}" method="post" style="margin: 0;">
+                    <button type="submit" class="sidebar-menu-item" style="width: 100%; border: none; background: none; font: inherit; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 12px; padding: 16px 20px; color: #666;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 20px; height: 20px;">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                        </svg>
+                        <span>Đăng xuất</span>
+                    </button>
+                </form>
             </nav>
         </aside>
         <main class="profile-content">
@@ -331,13 +335,13 @@
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
-    <script>
-        const user = JSON.parse(localStorage.getItem('canifaUser'));
-        if (user) {
-            document.getElementById('userName').textContent = user.name || 'Khách hàng';
-            document.getElementById('memberName').textContent = (user.name || 'Khách hàng').toUpperCase();
-            document.getElementById('memberId').textContent = '**** **** **** ' + (user.id || '1234').toString().slice(-4);
-        }
+    <script th:inline="javascript">
+        // User data from server
+        const userName = /*[[${user?.fullName ?: 'Khách hàng'}]]*/ 'Khách hàng';
+        const memberId = /*[[${user?.id ?: '0000'}]]*/ '0000';
+        
+        document.getElementById('memberName').textContent = userName.toUpperCase();
+        document.getElementById('memberId').textContent = '**** **** **** ' + memberId.toString().slice(-4);
     </script>
 </body>
 

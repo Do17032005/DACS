@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${isEdit ? 'Sửa Danh Mục' : 'Thêm Danh Mục'}">Danh Mục - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="~{fragments/common :: navbar}"></div>
+
+    <div class="container my-5">
+        <!-- Header -->
+        <div class="mb-4">
+            <h2>
+                <i th:class="${isEdit ? 'fas fa-edit' : 'fas fa-plus'} me-2"></i>
+                <span th:text="${isEdit ? 'Sửa Danh Mục' : 'Thêm Danh Mục'}">Danh Mục</span>
+            </h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/categories">Danh mục</a></li>
+                    <li class="breadcrumb-item active" th:text="${isEdit ? 'Sửa' : 'Thêm'}">Form</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Alert Messages -->
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Form -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Thông Tin Danh Mục
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${isEdit ? '/admin/categories/edit/' + category.id : '/admin/categories/add'}"
+                              method="post" th:object="${category}">
+                            
+                            <div class="mb-3">
+                                <label for="name" class="form-label">
+                                    Tên Danh Mục <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="name" 
+                                       th:field="*{name}" 
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" 
+                                       required 
+                                       placeholder="VD: NAM, NỮ, TRẺ EM...">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                <div class="form-text">Tên danh mục phải là duy nhất</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Mô Tả</label>
+                                <textarea class="form-control" id="description" 
+                                          th:field="*{description}" 
+                                          th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'" 
+                                          rows="3"
+                                          placeholder="Mô tả về danh mục sản phẩm này..."></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="subcategories" class="form-label">
+                                    Phân Loại Con (Subcategories)
+                                </label>
+                                <textarea class="form-control" id="subcategories" 
+                                          th:field="*{subcategories}" 
+                                          rows="4"
+                                          placeholder="Nhập các phân loại con, phân cách bằng dấu phẩy&#10;VD cho NAM: Áo thun,Áo polo,Áo sơ mi,Áo khoác,Quần jean,Quần kaki,Quần short&#10;VD cho NỮ: Áo thun,Áo sơ mi,Áo len,Áo khoác,Áo hoodie,Quần jean,Quần kaki,Quần short,Quần jogger,Váy,Đầm,Chân váy,Bộ mặc nhà,Đồ ngủ"></textarea>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Nhập danh sách phân loại con, phân cách bằng dấu phẩy. 
+                                    Các phân loại này sẽ xuất hiện trong menu dropdown và form sản phẩm.
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="displayOrder" class="form-label">Thứ Tự Hiển Thị</label>
+                                    <input type="number" class="form-control" id="displayOrder" 
+                                           th:field="*{displayOrder}" min="0" value="0">
+                                    <div class="form-text">Số thứ tự hiển thị (nhỏ hơn sẽ hiển thị trước)</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Trạng Thái</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="isActive" 
+                                               th:field="*{active}">
+                                        <label class="form-check-label" for="isActive">
+                                            Kích hoạt danh mục
+                                        </label>
+                                    </div>
+                                    <div class="form-text">Chỉ danh mục được kích hoạt mới hiển thị cho khách</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i th:class="${isEdit ? 'fas fa-save' : 'fas fa-plus'} me-1"></i>
+                                    <span th:text="${isEdit ? 'Cập Nhật' : 'Thêm Mới'}">Lưu</span>
+                                </button>
+                                <a href="/admin/categories" class="btn btn-secondary">
+                                    <i class="fas fa-times me-1"></i>Hủy
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Card -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Hướng Dẫn</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>Tên danh mục nên ngắn gọn và rõ ràng</small>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>Sử dụng thứ tự hiển thị để sắp xếp danh mục</small>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>Tắt trạng thái để ẩn danh mục tạm thời</small>
+                            </li>
+                            <li class="mb-0">
+                                <i class="fas fa-info-circle text-info me-2"></i>
+                                <small>Không thể xóa danh mục đang có sản phẩm</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/common :: footer}"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

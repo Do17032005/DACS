@@ -7,56 +7,401 @@
 <body class="bg-light">
     <nav th:replace="~{fragments/common :: navbar}"></nav>
 
-    <div class="container mt-4" style="min-height: 70vh;">
+    <div class="container-fluid mt-4 px-4" style="min-height: 70vh;">
+        <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0"><i class="fas fa-boxes me-2"></i>Product Management</h2>
-            <div>
-                <a href="/admin/orders" class="btn btn-warning me-2 text-dark shadow-sm"><i
-                        class="fas fa-shipping-fast me-1"></i>Manage Orders</a>
-                <a href="/admin/users" class="btn btn-info me-2 text-white shadow-sm"><i
-                        class="fas fa-users me-1"></i>Manage Users</a>
-                <a href="/admin/product/add" class="btn btn-success shadow-sm"><i class="fas fa-plus me-1"></i>Add New
-                    Product</a>
+            <h2 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h2>
+            <div class="text-muted">
+                <i class="fas fa-calendar me-1"></i>
+                <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm')}">28/01/2026</span>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #198754 !important;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2">Tổng Doanh Thu</h6>
+                                <h3 class="mb-0 text-success" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</h3>
+                            </div>
+                            <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                                <i class="fas fa-dollar-sign fa-2x text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #0d6efd !important;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2">Tổng Đơn Hàng</h6>
+                                <h3 class="mb-0 text-primary" th:text="${totalOrders}">0</h3>
+                                <small class="text-warning"><span th:text="${pendingOrders}">0</span> đang chờ xử lý</small>
+                            </div>
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                                <i class="fas fa-shopping-cart fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #6f42c1 !important;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2">Tổng Sản Phẩm</h6>
+                                <h3 class="mb-0" style="color: #6f42c1;" th:text="${totalProducts}">0</h3>
+                                <small class="text-danger"><span th:text="${lowStockProducts}">0</span> sắp hết hàng</small>
+                            </div>
+                            <div class="rounded-circle p-3" style="background-color: rgba(111, 66, 193, 0.1);">
+                                <i class="fas fa-boxes fa-2x" style="color: #6f42c1;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-0 shadow-sm h-100" style="border-left: 4px solid #fd7e14 !important;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted text-uppercase mb-2">Người Dùng</h6>
+                                <h3 class="mb-0" style="color: #fd7e14;" th:text="${totalUsers}">0</h3>
+                            </div>
+                            <div class="rounded-circle p-3" style="background-color: rgba(253, 126, 20, 0.1);">
+                                <i class="fas fa-users fa-2x" style="color: #fd7e14;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0"><i class="fas fa-bolt me-2 text-warning"></i>Thao Tác Nhanh</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/product/add" class="btn btn-success w-100 py-3">
+                                    <i class="fas fa-plus-circle fa-lg d-block mb-2"></i>
+                                    Thêm Sản Phẩm
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/orders" class="btn btn-primary w-100 py-3">
+                                    <i class="fas fa-clipboard-list fa-lg d-block mb-2"></i>
+                                    Quản Lý Đơn
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/users" class="btn btn-info w-100 py-3 text-white">
+                                    <i class="fas fa-users-cog fa-lg d-block mb-2"></i>
+                                    Quản Lý User
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/vouchers" class="btn btn-warning w-100 py-3">
+                                    <i class="fas fa-ticket-alt fa-lg d-block mb-2"></i>
+                                    Mã Giảm Giá
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/categories" class="btn btn-outline-primary w-100 py-3">
+                                    <i class="fas fa-list fa-lg d-block mb-2"></i>
+                                    Danh Mục
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/reviews" class="btn btn-outline-warning w-100 py-3">
+                                    <i class="fas fa-star fa-lg d-block mb-2"></i>
+                                    Đánh Giá
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/admin/products" class="btn btn-secondary w-100 py-3">
+                                    <i class="fas fa-boxes fa-lg d-block mb-2"></i>
+                                    Tất Cả SP
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <a href="/" class="btn btn-outline-dark w-100 py-3">
+                                    <i class="fas fa-store fa-lg d-block mb-2"></i>
+                                    Xem Shop
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Orders -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-clock me-2 text-primary"></i>Đơn Hàng Gần Đây</h5>
+                        <a href="/admin/orders" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-3">Mã ĐH</th>
+                                        <th>Khách hàng</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="order : ${recentOrders}">
+                                        <td class="ps-3 fw-bold" th:text="${order.orderCode}">ORD123</td>
+                                        <td th:text="${order.customerName}">Tên KH</td>
+                                        <td class="text-success fw-bold" th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">100,000đ</td>
+                                        <td>
+                                            <span class="badge rounded-pill"
+                                                th:classappend="${order.status.name() == 'DELIVERED' ? 'bg-success' : 
+                                                    (order.status.name() == 'SHIPPING' ? 'bg-info' : 
+                                                    (order.status.name() == 'CANCELLED' ? 'bg-danger' : 
+                                                    (order.status.name() == 'CONFIRMED' ? 'bg-primary' : 'bg-warning text-dark')))}"
+                                                th:text="${order.status}">PENDING</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(recentOrders)}">
+                                        <td colspan="4" class="text-center text-muted py-4">Chưa có đơn hàng nào</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Products -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Sản Phẩm Sắp Hết</h5>
+                        <a href="/admin/products" class="btn btn-sm btn-outline-danger">Xem tất cả</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-3">Sản phẩm</th>
+                                        <th>Danh mục</th>
+                                        <th>Tồn kho</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="product : ${lowStockList}">
+                                        <td class="ps-3">
+                                            <div class="d-flex align-items-center">
+                                                <img th:src="${product.imageUrl}" width="40" height="40" class="rounded me-2" style="object-fit: cover;">
+                                                <span class="fw-bold" th:text="${#strings.abbreviate(product.name, 25)}">Tên SP</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-secondary" th:text="${product.category}">NỮ</span></td>
+                                        <td>
+                                            <span th:if="${product.stock <= 3}" class="badge bg-danger fw-bold" th:text="${product.stock}">5</span>
+                                            <span th:if="${product.stock > 3 and product.stock <= 7}" class="badge bg-warning text-dark fw-bold" th:text="${product.stock}">5</span>
+                                            <span th:if="${product.stock > 7 and product.stock <= 10}" class="badge bg-info fw-bold" th:text="${product.stock}">5</span>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/product/edit/{id}(id=${product.id})}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(lowStockList)}">
+                                        <td colspan="4" class="text-center text-muted py-4">Tất cả sản phẩm đều đủ hàng</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-boxes me-2"></i>Quản Lý Sản Phẩm</h5>
+                <a href="/admin/product/add" class="btn btn-success"><i class="fas fa-plus me-1"></i>Thêm Sản Phẩm</a>
+            </div>
+            
+            <!-- Filter Section -->
+            <div class="card-body border-bottom bg-light">
+                <form method="get" action="/admin/dashboard" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted mb-1">
+                            <i class="fas fa-search me-1"></i>Tìm kiếm
+                        </label>
+                        <input type="text" class="form-control" name="search" 
+                               th:value="${searchKeyword}" 
+                               placeholder="Nhập tên sản phẩm...">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted mb-1">
+                            <i class="fas fa-tag me-1"></i>Danh mục
+                        </label>
+                        <select class="form-select" name="category">
+                            <option value="">Tất cả</option>
+                            <option th:each="cat : ${categories}" 
+                                    th:value="${cat}" 
+                                    th:text="${cat}"
+                                    th:selected="${cat == selectedCategory}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted mb-1">
+                            <i class="fas fa-trademark me-1"></i>Thương hiệu
+                        </label>
+                        <select class="form-select" name="brand">
+                            <option value="">Tất cả</option>
+                            <option th:each="b : ${brands}" 
+                                    th:value="${b}" 
+                                    th:text="${b}"
+                                    th:selected="${b == selectedBrand}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted mb-1">
+                            <i class="fas fa-tshirt me-1"></i>Chất liệu
+                        </label>
+                        <select class="form-select" name="material">
+                            <option value="">Tất cả</option>
+                            <option th:each="m : ${materials}" 
+                                    th:value="${m}" 
+                                    th:text="${m}"
+                                    th:selected="${m == selectedMaterial}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="fas fa-filter me-1"></i>Lọc
+                        </button>
+                        <a href="/admin/dashboard" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo me-1"></i>Reset
+                        </a>
+                    </div>
+                </form>
+                
+                <!-- Filter Results Info -->
+                <div class="mt-3" th:if="${searchKeyword != null or selectedCategory != null or selectedBrand != null or selectedMaterial != null}">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="text-muted small">
+                            <i class="fas fa-filter me-1"></i>Đang lọc:
+                        </span>
+                        <span class="badge bg-primary" th:if="${searchKeyword != null and !searchKeyword.isEmpty()}">
+                            Tìm: <span th:text="${searchKeyword}"></span>
+                            <a th:href="@{/admin/dashboard(category=${selectedCategory},brand=${selectedBrand},material=${selectedMaterial})}" 
+                               class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                        <span class="badge bg-secondary" th:if="${selectedCategory != null and !selectedCategory.isEmpty()}">
+                            Danh mục: <span th:text="${selectedCategory}"></span>
+                            <a th:href="@{/admin/dashboard(search=${searchKeyword},brand=${selectedBrand},material=${selectedMaterial})}" 
+                               class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                        <span class="badge bg-info" th:if="${selectedBrand != null and !selectedBrand.isEmpty()}">
+                            Thương hiệu: <span th:text="${selectedBrand}"></span>
+                            <a th:href="@{/admin/dashboard(search=${searchKeyword},category=${selectedCategory},material=${selectedMaterial})}" 
+                               class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                        <span class="badge bg-success" th:if="${selectedMaterial != null and !selectedMaterial.isEmpty()}">
+                            Chất liệu: <span th:text="${selectedMaterial}"></span>
+                            <a th:href="@{/admin/dashboard(search=${searchKeyword},category=${selectedCategory},brand=${selectedBrand})}" 
+                               class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                        <span class="text-muted small ms-2">
+                            (Hiển thị <strong th:text="${#lists.size(products)}">0</strong> sản phẩm)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0 align-middle">
                         <thead class="table-light">
                             <tr>
                                 <th class="ps-3">ID</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th class="text-end pe-3">Actions</th>
+                                <th>Hình</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Giá</th>
+                                <th>Giảm</th>
+                                <th>Tồn</th>
+                                <th>Đã bán</th>
+                                <th>Tags</th>
+                                <th class="text-end pe-3">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="product : ${products}">
                                 <td class="ps-3 text-muted" th:text="${product.id}">1</td>
                                 <td>
-                                    <img th:src="${product.imageUrl}" width="40" height="40" class="rounded"
+                                    <img th:src="${product.imageUrl}" width="50" height="50" class="rounded"
                                         style="object-fit: cover;">
                                 </td>
-                                <td class="fw-bold" th:text="${product.name}">Product Name</td>
-                                <td><span class="badge bg-secondary rounded-pill"
-                                        th:text="${product.category}">Category</span></td>
-                                <td th:text="${'$' + product.price}">$99.99</td>
+                                <td class="fw-bold" th:text="${#strings.abbreviate(product.name, 30)}">Product Name</td>
+                                <td><span class="badge bg-secondary rounded-pill" th:text="${product.category}">Category</span></td>
                                 <td>
-                                    <span th:class="${product.stock > 0 ? 'text-success' : 'text-danger fw-bold'}"
+                                    <div th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}" class="fw-bold text-danger">99,000đ</div>
+                                    <small class="text-muted text-decoration-line-through" th:if="${product.originalPrice != null}" 
+                                        th:text="${#numbers.formatDecimal(product.originalPrice, 0, 'COMMA', 0, 'POINT') + 'đ'}">150,000đ</small>
+                                </td>
+                                <td>
+                                    <span th:if="${product.discountPercent > 0}" class="badge bg-danger" th:text="${'-' + product.discountPercent + '%'}">-25%</span>
+                                    <span th:if="${product.discountPercent == null || product.discountPercent == 0}" class="text-muted">-</span>
+                                </td>
+                                <td>
+                                    <span th:class="${product.stock > 10 ? 'text-success fw-bold' : (product.stock > 0 ? 'text-warning fw-bold' : 'text-danger fw-bold')}"
                                         th:text="${product.stock}">10</span>
+                                </td>
+                                <td th:text="${product.sold}">0</td>
+                                <td>
+                                    <span th:if="${product.isNew}" class="badge bg-success me-1">Mới</span>
+                                    <span th:if="${product.bestseller}" class="badge bg-warning text-dark">Hot</span>
                                 </td>
                                 <td class="text-end pe-3">
                                     <a th:href="@{/admin/product/edit/{id}(id=${product.id})}"
-                                        class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>
+                                        class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></a>
                                     <a th:href="@{/admin/product/delete/{id}(id=${product.id})}"
                                         class="btn btn-sm btn-outline-danger"
-                                        onclick="return confirm('Are you sure you want to delete this product?')"><i
+                                        onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')" title="Xóa"><i
                                             class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <!-- Empty state when no products found -->
+                            <tr th:if="${#lists.isEmpty(products)}">
+                                <td colspan="10" class="text-center py-5">
+                                    <div class="text-muted">
+                                        <i class="fas fa-box-open fa-3x mb-3"></i>
+                                        <p class="mb-0">Không tìm thấy sản phẩm nào</p>
+                                        <small th:if="${searchKeyword != null or selectedCategory != null or selectedBrand != null or selectedMaterial != null}">
+                                            Hãy thử thay đổi bộ lọc hoặc 
+                                            <a href="/admin/dashboard" class="text-primary">xóa tất cả bộ lọc</a>
+                                        </small>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

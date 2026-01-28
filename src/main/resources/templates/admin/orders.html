@@ -1,17 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/common :: head('Manage Orders')}">
+<head th:replace="~{fragments/common :: head('Quản Lý Đơn Hàng')}">
 </head>
 
 <body class="bg-light">
     <nav th:replace="~{fragments/common :: navbar}"></nav>
 
-    <div class="container mt-4" style="min-height: 70vh;">
+    <div class="container-fluid mt-4 px-4" style="min-height: 70vh;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0"><i class="fas fa-boxes me-2"></i>Order Management</h2>
-            <a href="/admin/dashboard" class="btn btn-secondary shadow-sm"><i
-                    class="fas fa-arrow-left me-1"></i>Dashboard</a>
+            <h2 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Quản Lý Đơn Hàng</h2>
+            <a href="/admin/dashboard" class="btn btn-secondary shadow-sm"><i class="fas fa-arrow-left me-1"></i>Dashboard</a>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-2">
+                <div class="card border-0 shadow-sm text-center py-3">
+                    <div class="text-muted small">Tổng đơn</div>
+                    <div class="h4 mb-0 text-primary" th:text="${totalOrders}">0</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card border-0 shadow-sm text-center py-3 bg-warning bg-opacity-10">
+                    <div class="text-muted small">Chờ xử lý</div>
+                    <div class="h4 mb-0 text-warning" th:text="${pendingCount}">0</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card border-0 shadow-sm text-center py-3 bg-info bg-opacity-10">
+                    <div class="text-muted small">Đang giao</div>
+                    <div class="h4 mb-0 text-info" th:text="${shippingCount}">0</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card border-0 shadow-sm text-center py-3 bg-success bg-opacity-10">
+                    <div class="text-muted small">Hoàn thành</div>
+                    <div class="h4 mb-0 text-success" th:text="${deliveredCount}">0</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card border-0 shadow-sm text-center py-3 bg-danger bg-opacity-10">
+                    <div class="text-muted small">Đã hủy</div>
+                    <div class="h4 mb-0 text-danger" th:text="${cancelledCount}">0</div>
+                </div>
+            </div>
         </div>
 
         <div class="card shadow-sm border-0">
@@ -20,40 +53,69 @@
                     <table class="table table-hover mb-0 align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th class="ps-3">Order ID</th>
-                                <th>User ID</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th class="text-end pe-3">Update Status</th>
+                                <th class="ps-3">Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>SĐT</th>
+                                <th>Tổng tiền</th>
+                                <th>Thanh toán</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày đặt</th>
+                                <th class="text-center">Cập nhật</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="order : ${orders}">
-                                <td class="ps-3 fw-bold text-muted" th:text="${'#' + order.id}">#123</td>
-                                <td th:text="${order.userId}">1</td>
-                                <td th:text="${#temporals.format(order.orderDate, 'MMM dd, HH:mm')}">Date</td>
-                                <td th:text="${'$' + order.totalPrice}" class="fw-bold text-success">Price</td>
-                                <td>
-                                    <span class="badge rounded-pill"
-                                        th:classappend="${order.status == 'COMPLETED' ? 'bg-success' : (order.status == 'SHIPPED' ? 'bg-primary' : 'bg-warning')}"
-                                        th:text="${order.status}">Status</span>
+                            <tr th:if="${orders == null or orders.empty}">
+                                <td colspan="8" class="text-center text-muted py-5">
+                                    <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                                    Chưa có đơn hàng nào
                                 </td>
-                                <td class="text-end pe-3">
-                                    <form th:action="@{/admin/order/status}" method="post" class="d-inline-flex">
-                                        <input type="hidden" name="id" th:value="${order.id}">
-                                        <select name="status" class="form-select form-select-sm me-2"
-                                            style="width: 130px;">
-                                            <option value="COMPLETED" th:selected="${order.status == 'COMPLETED'}">
-                                                Completed</option>
-                                            <option value="SHIPPED" th:selected="${order.status == 'SHIPPED'}">Shipped
-                                            </option>
-                                            <option value="PROCESSING" th:selected="${order.status == 'PROCESSING'}">
-                                                Processing</option>
-                                            <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">
-                                                Cancelled</option>
+                            </tr>
+                            <tr th:each="order : ${orders}" th:if="${orders != null and !orders.empty}">
+                                <td class="ps-3">
+                                    <span class="fw-bold text-primary" th:text="${order.orderCode != null ? order.orderCode : 'N/A'}">ORD123</span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold" th:text="${order.customerName != null ? order.customerName : 'Khách'}">Tên KH</div>
+                                </td>
+                                <td>
+                                    <span th:text="${order.customerPhone != null ? order.customerPhone : 'N/A'}">0123456789</span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-success">
+                                        <span th:if="${order.totalAmount != null}" 
+                                              th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                                        <span th:if="${order.totalAmount == null}">0đ</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary" th:text="${order.paymentMethod != null ? order.paymentMethod : 'COD'}">COD</span>
+                                </td>
+                                <td>
+                                    <th:block th:switch="${order.status != null ? order.status.name() : 'PENDING'}">
+                                        <span th:case="'DELIVERED'" class="badge rounded-pill bg-success" th:text="${order.status}">Đã giao</span>
+                                        <span th:case="'SHIPPING'" class="badge rounded-pill bg-info" th:text="${order.status}">Đang giao</span>
+                                        <span th:case="'CANCELLED'" class="badge rounded-pill bg-danger" th:text="${order.status}">Đã hủy</span>
+                                        <span th:case="'CONFIRMED'" class="badge rounded-pill bg-primary" th:text="${order.status}">Đã xác nhận</span>
+                                        <span th:case="'PROCESSING'" class="badge rounded-pill bg-secondary" th:text="${order.status}">Đang xử lý</span>
+                                        <span th:case="*" class="badge rounded-pill bg-warning text-dark" th:text="${order.status != null ? order.status : 'PENDING'}">Chờ xử lý</span>
+                                    </th:block>
+                                </td>
+                                <td>
+                                    <span th:if="${order.createdAt != null}" 
+                                          th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">28/01/2026</span>
+                                    <span th:if="${order.createdAt == null}">N/A</span>
+                                </td>
+                                <td class="text-center">
+                                    <form th:action="@{/admin/order/update-status/{id}(id=${order.id})}" method="post" class="d-flex gap-1 justify-content-center">
+                                        <select name="status" class="form-select form-select-sm" style="width: 130px;">
+                                            <option value="PENDING" th:selected="${order.status != null and order.status.name() == 'PENDING'}">Chờ xử lý</option>
+                                            <option value="CONFIRMED" th:selected="${order.status != null and order.status.name() == 'CONFIRMED'}">Đã xác nhận</option>
+                                            <option value="PROCESSING" th:selected="${order.status != null and order.status.name() == 'PROCESSING'}">Đang xử lý</option>
+                                            <option value="SHIPPING" th:selected="${order.status != null and order.status.name() == 'SHIPPING'}">Đang giao</option>
+                                            <option value="DELIVERED" th:selected="${order.status != null and order.status.name() == 'DELIVERED'}">Đã giao</option>
+                                            <option value="CANCELLED" th:selected="${order.status != null and order.status.name() == 'CANCELLED'}">Đã hủy</option>
                                         </select>
-                                        <button type="submit" class="btn btn-sm btn-outline-dark">Update</button>
+                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-check"></i></button>
                                     </form>
                                 </td>
                             </tr>

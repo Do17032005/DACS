@@ -1,112 +1,107 @@
 package com.example.Clothesshoponline.controller;
 
-import com.example.Clothesshoponline.repository.UserRepository;
-import com.example.Clothesshoponline.service.OrderService;
+import com.example.Clothesshoponline.model.CartItem;
+import com.example.Clothesshoponline.model.User;
+import com.example.Clothesshoponline.model.Voucher;
+import com.example.Clothesshoponline.repository.SavedVoucherRepository;
+import com.example.Clothesshoponline.service.CartService;
 import com.example.Clothesshoponline.service.ProductService;
-import com.example.Clothesshoponline.service.RecommendationService;
+import com.example.Clothesshoponline.service.UserService;
+import com.example.Clothesshoponline.service.VoucherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class ViewController {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-    private final RecommendationService recommendationService;
-    private final UserRepository userRepository;
-    private final OrderService orderService;
+    @Autowired
+    private UserService userService;
 
-    public ViewController(ProductService productService, RecommendationService recommendationService,
-            UserRepository userRepository, OrderService orderService) {
-        this.productService = productService;
-        this.recommendationService = recommendationService;
-        this.userRepository = userRepository;
-        this.orderService = orderService;
-    }
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private VoucherService voucherService;
+
+    @Autowired
+    private SavedVoucherRepository savedVoucherRepository;
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+    public String homePage(Authentication authentication, Model model) {
+        model.addAttribute("products", productService.getNewProducts());
+        model.addAttribute("bestsellers", productService.getBestsellers());
+        model.addAttribute("newProducts", productService.getNewProducts());
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            userRepository.findByUsername(auth.getName()).ifPresent(user -> {
-                model.addAttribute("recommendations", recommendationService.getRecommendationsForUser(user.getId()));
-            });
+        // Get active vouchers for banner
+        List<Voucher> activeVouchers = voucherService.getActiveVouchers();
+        model.addAttribute("activeVouchers", activeVouchers);
+
+        // Get saved voucher IDs for current user
+        if (authentication != null) {
+            User user = userService.findByUsername(authentication.getName()).orElse(null);
+            if (user != null) {
+                Set<Long> savedVoucherIds = savedVoucherRepository.findByUser(user)
+                        .stream()
+                        .map(sv -> sv.getVoucher().getId())
+                        .collect(Collectors.toSet());
+                model.addAttribute("savedVoucherIds", savedVoucherIds);
+            }
         }
 
         return "index";
     }
 
-    @GetMapping("/product/{id}")
-    public String productDetails(@PathVariable Long id, Model model) {
-        model.addAttribute("product",
-                productService.getProductById(id).orElseThrow(() -> new RuntimeException("Product not found")));
-        return "product-detail";
-    }
-
-    @GetMapping("/orders")
-    public String orders(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            userRepository.findByUsername(auth.getName()).ifPresent(user -> {
-                model.addAttribute("orders", orderService.getOrdersByUserId(user.getId()));
-                model.addAttribute("user", user);
-            });
-        }
-        return "orders";
-    }
-
-    @GetMapping("/profile")
-    public String profile(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-            userRepository.findByUsername(auth.getName()).ifPresent(user -> {
-                model.addAttribute("user", user);
-            });
-        }
-        return "profile";
-    }
-
-    @GetMapping("/cart")
-    public String cart() {
-        return "cart";
-    }
-
     @GetMapping("/checkout")
-    public String checkout() {
+    public String checkoutPage(Authentication authentication, Model model) {
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+
+        User user = userService.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+
+        List<CartItem> cartItems = cartService.getCartItems(user);
+        if (cartItems == null || cartItems.isEmpty()) {
+            return "redirect:/cart";
+        }
+
+        BigDecimal totalAmount = cartService.getCartTotal(user);
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalAmount", totalAmount);
+        model.addAttribute("user", user);
         return "checkout";
     }
 
-    @GetMapping("/vouchers")
-    public String vouchers() {
-        return "vouchers";
+    @GetMapping("/order-success")
+    public String orderSuccessPage() {
+        return "order-success";
     }
 
     @GetMapping("/membership")
-    public String membership() {
+    public String membershipPage(Authentication authentication, Model model) {
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+        User user = userService.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+        model.addAttribute("user", user);
         return "membership";
     }
 
-    @GetMapping("/address")
-    public String address() {
-        return "address";
-    }
-
-    @GetMapping("/products")
-    public String products(@RequestParam(value = "q", required = false) String query, Model model) {
-        model.addAttribute("products", productService.searchProducts(query));
-        model.addAttribute("query", query);
-        return "products";
-    }
-
     @GetMapping("/chat")
-    public String chat() {
+    public String chatPage() {
         return "chat";
     }
 }

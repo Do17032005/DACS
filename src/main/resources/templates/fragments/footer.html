@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
     <div th:fragment="footer">
@@ -9,13 +9,13 @@
                 <div class="footer-content">
                     <!-- Column 1 - Company Info -->
                     <div class="footer-col">
-                        <h4>DỰ ÁN WEBSITE BÁN HÀNG THỜI TRANG</h4>
-                        <p><strong>Tên dự án:</strong> ClothesShopOnline</p>
-                        <p><strong>Thực hiện bởi:</strong> Nguyễn Tiến Doanh, Hoàng Văn Độ</p>
-                        <p><strong>Mục đích:</strong> Dự án học tập – không sử dụng cho mục đích thương mại</p>
-                        <p><strong>Địa chỉ:</strong> ĐH Phenikaa / Thành phố Hà Nội</p>
-                        <p><strong>Điện thoại:</strong> 0123 456 789</p>
-                        <p><strong>Email:</strong> admin@example.com</p>
+                        <h4 data-editable="footer_project_title" data-edit-label="Tiêu đề dự án">DỰ ÁN WEBSITE BÁN HÀNG THỜI TRANG</h4>
+                        <p><strong>Tên dự án:</strong> <span data-editable="footer_project_name" data-edit-label="Tên dự án">ClothesShopOnline</span></p>
+                        <p><strong>Thực hiện bởi:</strong> <span data-editable="footer_authors" data-edit-label="Tác giả">Nguyễn Tiến Doanh, Hoàng Văn Độ</span></p>
+                        <p><strong>Mục đích:</strong> <span data-editable="footer_purpose" data-edit-label="Mục đích">Dự án học tập – không sử dụng cho mục đích thương mại</span></p>
+                        <p><strong>Địa chỉ:</strong> <span data-editable="contact_address" data-edit-label="Địa chỉ">ĐH Phenikaa / Thành phố Hà Nội</span></p>
+                        <p><strong>Điện thoại:</strong> <span data-editable="contact_phone" data-edit-label="Điện thoại">0123 456 789</span></p>
+                        <p><strong>Email:</strong> <span data-editable="contact_email" data-edit-label="Email">admin@example.com</span></p>
                     </div>
 
                     <!-- Column 2 -->
@@ -256,6 +256,14 @@
                 addMessage(response, 'bot');
             }
         </script>
+
+        <!-- Admin Inline Editor Script -->
+        <th:block sec:authorize="hasRole('ADMIN')">
+            <script>
+                document.body.classList.add('is-admin');
+            </script>
+            <script th:src="@{/js/admin-editor.js}"></script>
+        </th:block>
     </div>
 </body>
 

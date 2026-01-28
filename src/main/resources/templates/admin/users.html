@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{fragments/common :: head('Manage Users')}">
+<head th:replace="~{fragments/common :: head('Quản Lý Người Dùng')}">
 </head>
 
 <body class="bg-light">
     <nav th:replace="~{fragments/common :: navbar}"></nav>
 
-    <div class="container mt-4" style="min-height: 70vh;">
+    <div class="container-fluid mt-4 px-4" style="min-height: 70vh;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0"><i class="fas fa-users-cog me-2"></i>User Management</h2>
+            <h2 class="mb-0"><i class="fas fa-users-cog me-2"></i>Quản Lý Người Dùng</h2>
             <div>
-                <a href="/admin/user/add" class="btn btn-success shadow-sm"><i class="fas fa-user-plus me-1"></i>Add New
-                    User</a>
-                <a href="/admin/dashboard" class="btn btn-secondary shadow-sm"><i
-                        class="fas fa-arrow-left me-1"></i>Dashboard</a>
+                <a href="/admin/dashboard" class="btn btn-secondary shadow-sm"><i class="fas fa-arrow-left me-1"></i>Dashboard</a>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center py-3">
+                    <div class="text-muted small">Tổng người dùng</div>
+                    <div class="h4 mb-0 text-primary" th:text="${#lists.size(users)}">0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center py-3 bg-danger bg-opacity-10">
+                    <div class="text-muted small">Admin</div>
+                    <div class="h4 mb-0 text-danger" th:text="${#lists.size(users.?[role.name() == 'ADMIN'])}">0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center py-3 bg-info bg-opacity-10">
+                    <div class="text-muted small">Người dùng</div>
+                    <div class="h4 mb-0 text-info" th:text="${#lists.size(users.?[role.name() == 'USER'])}">0</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center py-3 bg-success bg-opacity-10">
+                    <div class="text-muted small">Đang hoạt động</div>
+                    <div class="h4 mb-0 text-success" th:text="${#lists.size(users.?[enabled == true])}">0</div>
+                </div>
             </div>
         </div>
 
@@ -26,29 +51,65 @@
                             <tr>
                                 <th class="ps-3">ID</th>
                                 <th>Username</th>
-                                <th>Full Name</th>
+                                <th>Họ tên</th>
                                 <th>Email</th>
-                                <th>Role</th>
-                                <th class="text-end pe-3">Actions</th>
+                                <th>Số điện thoại</th>
+                                <th>Hạng thành viên</th>
+                                <th>Điểm</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th class="text-end pe-3">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="user : ${users}">
                                 <td class="ps-3 text-muted" th:text="${user.id}">1</td>
                                 <td class="fw-bold" th:text="${user.username}">user</td>
-                                <td th:text="${user.fullName}">Name</td>
-                                <td th:text="${user.email}">email@example.com</td>
+                                <td th:text="${user.fullName}">Nguyễn Văn A</td>
+                                <td>
+                                    <small th:text="${user.email}">email@example.com</small>
+                                </td>
+                                <td th:text="${user.phone != null ? user.phone : '-'}">0123456789</td>
+                                <td>
+                                    <span class="badge" 
+                                        th:classappend="${user.memberLevel == 'VIP' ? 'bg-warning text-dark' : 
+                                            (user.memberLevel == 'Thành viên vàng' ? 'bg-warning text-dark' : 
+                                            (user.memberLevel == 'Thành viên bạc' ? 'bg-secondary' : 'bg-light text-dark'))}"
+                                        th:text="${user.memberLevel != null ? user.memberLevel : 'Mới'}">Thành viên mới</span>
+                                </td>
+                                <td th:text="${user.memberPoints != null ? user.memberPoints : 0}">0</td>
                                 <td>
                                     <span class="badge rounded-pill"
-                                        th:classappend="${user.role == 'ADMIN' ? 'bg-danger' : 'bg-info text-dark'}"
+                                        th:classappend="${user.role.name() == 'ADMIN' ? 'bg-danger' : 'bg-info'}"
                                         th:text="${user.role}">USER</span>
                                 </td>
+                                <td>
+                                    <span class="badge rounded-pill"
+                                        th:classappend="${user.enabled ? 'bg-success' : 'bg-secondary'}"
+                                        th:text="${user.enabled ? 'Hoạt động' : 'Đã khóa'}">Hoạt động</span>
+                                </td>
                                 <td class="text-end pe-3">
-                                    <a th:if="${user.role != 'ADMIN'}"
+                                    <a th:href="@{/admin/user/edit/{id}(id=${user.id})}"
+                                        class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></a>
+                                    <a th:if="${user.role.name() != 'ADMIN'}"
+                                        th:href="@{/admin/user/toggle/{id}(id=${user.id})}"
+                                        class="btn btn-sm"
+                                        th:classappend="${user.enabled ? 'btn-outline-warning' : 'btn-outline-success'}"
+                                        th:title="${user.enabled ? 'Khóa tài khoản' : 'Mở khóa'}">
+                                        <i th:class="${user.enabled ? 'fas fa-lock' : 'fas fa-unlock'}"></i>
+                                    </a>
+                                    <a th:if="${user.role.name() != 'ADMIN'}"
                                         th:href="@{/admin/user/delete/{id}(id=${user.id})}"
-                                        class="btn btn-sm btn-outline-danger"
-                                        onclick="return confirm('Delete this user? This cannot be undone.')"><i
-                                            class="fas fa-trash"></i> Delete</a>
+                                        class="btn btn-sm btn-outline-danger ms-1"
+                                        onclick="return confirm('Xóa người dùng này? Thao tác không thể hoàn tác.')" title="Xóa">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(users)}">
+                                <td colspan="10" class="text-center text-muted py-5">
+                                    <i class="fas fa-users fa-3x mb-3 d-block"></i>
+                                    Chưa có người dùng nào
                                 </td>
                             </tr>
                         </tbody>

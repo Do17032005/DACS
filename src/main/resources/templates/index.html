@@ -13,24 +13,24 @@
         <div class="hero-slider swiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <a href="#">
+                    <a th:href="@{/products}">
                         <div class="hero-banner" style="background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);">
                             <div class="hero-content">
                                 <div class="hero-left">
-                                    <h2 class="hero-title">LỄ HỘI MUA SẮM</h2>
-                                    <p class="hero-subtitle">CLOTHESSHOP SALE</p>
+                                    <h2 class="hero-title" data-editable="hero_title" data-edit-label="Tiêu đề banner">LỄ HỘI MUA SẮM</h2>
+                                    <p class="hero-subtitle" data-editable="hero_subtitle" data-edit-label="Phụ đề banner">CLOTHESSHOP SALE</p>
                                 </div>
                                 <div class="hero-center">
                                     <span class="hero-discount-label">Giảm tới</span>
-                                    <span class="hero-discount">50<span class="percent">%</span></span>
+                                    <span class="hero-discount" data-editable="hero_discount" data-edit-label="Phần trăm giảm">50<span class="percent">%</span></span>
                                 </div>
                                 <div class="hero-right">
                                     <h3 class="hero-deal">ĐẶC BIỆT</h3>
-                                    <p class="hero-deal-text">MUA 2 NHẬN 3</p>
-                                    <p class="hero-deal-sub">Hàng ngàn sản phẩm hấp dẫn</p>
-                                    <p class="hero-date">Online: 14/1 - 25/1</p>
-                                    <p class="hero-date">Hệ thống: 16/1 - 25/1</p>
-                                    <a href="#" class="hero-btn">Mua ngay</a>
+                                    <p class="hero-deal-text" data-editable="hero_deal_text" data-edit-label="Ưu đãi đặc biệt">MUA 2 NHẬN 3</p>
+                                    <p class="hero-deal-sub" data-editable="hero_deal_sub" data-edit-label="Mô tả deal">Hàng ngàn sản phẩm hấp dẫn</p>
+                                    <p class="hero-date" data-editable="hero_date_online" data-edit-label="Ngày online">Online: 14/1 - 25/1</p>
+                                    <p class="hero-date" data-editable="hero_date_store" data-edit-label="Ngày cửa hàng">Hệ thống: 16/1 - 25/1</p>
+                                    <a th:href="@{/products}" class="hero-btn">Mua ngay</a>
                                 </div>
                             </div>
                         </div>
@@ -44,55 +44,33 @@
     </section>
 
     <!-- Voucher Section -->
-    <section class="voucher-section">
+    <section class="voucher-section" th:if="${not #lists.isEmpty(activeVouchers)}">
         <div class="container">
             <div class="voucher-slider swiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="voucher-card">
+                    <div class="swiper-slide" th:each="voucher : ${activeVouchers}">
+                        <div class="voucher-card" th:classappend="${voucher.discountPercent != null and voucher.discountPercent >= 40} ? 'special' : ''">
                             <div class="voucher-left">
-                                <span class="voucher-discount">30%</span>
+                                <span class="voucher-discount" 
+                                      th:text="${voucher.discountPercent != null ? voucher.discountPercent + '%' : 
+                                               (voucher.discountAmount != null ? #numbers.formatDecimal(voucher.discountAmount/1000, 0, 'COMMA', 0, 'POINT') + 'K' : 'Sale')}">30%</span>
                             </div>
                             <div class="voucher-right">
-                                <p class="voucher-title">Giảm 30%</p>
-                                <p class="voucher-desc">Đơn từ 899K</p>
-                                <button class="voucher-btn">Lưu</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="voucher-card">
-                            <div class="voucher-left">
-                                <span class="voucher-discount">50%</span>
-                            </div>
-                            <div class="voucher-right">
-                                <p class="voucher-title">Giảm 50%</p>
-                                <p class="voucher-desc">Đơn từ 1.499K</p>
-                                <button class="voucher-btn">Lưu</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="voucher-card special">
-                            <div class="voucher-left">
-                                <span class="voucher-discount">30%</span>
-                            </div>
-                            <div class="voucher-right">
-                                <p class="voucher-title">Giảm 30%</p>
-                                <p class="voucher-desc">Đơn từ 599K</p>
-                                <button class="voucher-btn">Lưu</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="voucher-card">
-                            <div class="voucher-left">
-                                <span class="voucher-discount">50%</span>
-                            </div>
-                            <div class="voucher-right">
-                                <p class="voucher-title">Freeship</p>
-                                <p class="voucher-desc">Đơn từ 499K</p>
-                                <button class="voucher-btn">Lưu</button>
+                                <p class="voucher-title" th:text="${voucher.title}">Giảm 30%</p>
+                                <p class="voucher-desc" 
+                                   th:text="${voucher.minOrderAmount != null ? 'Đơn từ ' + #numbers.formatDecimal(voucher.minOrderAmount/1000, 0, 'COMMA', 0, 'POINT') + 'K' : 'Không giới hạn'}">Đơn từ 899K</p>
+                                <p class="voucher-code" style="font-size: 11px; color: #666; margin: 4px 0;">
+                                    Mã: <strong th:text="${voucher.code}">CODE</strong>
+                                    <span th:if="${voucher.usageLimit != null}" 
+                                          style="color: #ff6b00; margin-left: 8px;"
+                                          th:text="'Còn ' + (${voucher.usageLimit - voucher.usedCount}) + ' lượt'">Còn 10 lượt</span>
+                                </p>
+                                <button class="voucher-btn" 
+                                        th:attr="data-voucher-id=${voucher.id}"
+                                        th:classappend="${savedVoucherIds != null and savedVoucherIds.contains(voucher.id)} ? 'saved' : ''"
+                                        th:disabled="${savedVoucherIds != null and savedVoucherIds.contains(voucher.id)}"
+                                        th:text="${savedVoucherIds != null and savedVoucherIds.contains(voucher.id)} ? 'Đã lưu' : 'Lưu'"
+                                        onclick="saveVoucher(this)">Lưu</button>
                             </div>
                         </div>
                     </div>
@@ -105,7 +83,7 @@
     <section class="products-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">SẢN PHẨM MỚI</h2>
+                <h2 class="section-title" data-editable="section_title_new_products">SẢN PHẨM MỚI</h2>
                 <div class="section-tabs">
                     <button class="tab-btn active" data-tab="nu">Nữ</button>
                     <button class="tab-btn" data-tab="nam">Nam</button>
@@ -130,7 +108,7 @@
                                             </path>
                                         </svg>
                                     </button>
-                                    <a th:href="@{'/product/' + ${product.id}}" class="action-btn quick-view">
+                                    <a th:href="@{'/products/' + ${product.id}}" class="action-btn quick-view">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -144,6 +122,14 @@
                                 <div class="product-price">
                                     <span class="price-sale"
                                         th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}">299,000đ</span>
+                                    <!-- Original price if discount exists -->
+                                    <span th:if="${product.originalPrice != null and product.discountPercent > 0}" 
+                                          class="price-original ms-2 text-muted text-decoration-line-through"
+                                          th:text="${#numbers.formatDecimal(product.originalPrice, 0, 'COMMA', 0, 'POINT') + 'đ'}">399,000đ</span>
+                                    <!-- Discount badge -->
+                                    <span th:if="${product.discountPercent != null and product.discountPercent > 0}" 
+                                          class="badge bg-danger ms-2" 
+                                          th:text="'-' + ${product.discountPercent} + '%'">-25%</span>
                                 </div>
                             </div>
                         </div>
@@ -159,24 +145,24 @@
     <section class="category-banners">
         <div class="container">
             <div class="banner-grid">
-                <a href="#" class="banner-item large">
-                    <img src="https://media.canifa.com/Simiconnector/banner_woman_jacket.webp" alt="Áo khoác nữ">
+                <a th:href="@{/products(category='NỮ')}" class="banner-item large" data-editable-link="banner_link_woman_jacket">
+                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&h=600&fit=crop" alt="Áo khoác nữ" data-editable="banner_img_woman_jacket">
                     <div class="banner-overlay">
-                        <h3>ÁO KHOÁC NỮ</h3>
+                        <h3 data-editable="banner_title_woman_jacket">ÁO KHOÁC NỮ</h3>
                         <span class="banner-cta">Xem ngay →</span>
                     </div>
                 </a>
-                <a href="#" class="banner-item">
-                    <img src="https://media.canifa.com/Simiconnector/banner_woman_sweater.webp" alt="Áo len nữ">
+                <a th:href="@{/products(category='NỮ')}" class="banner-item" data-editable-link="banner_link_woman_sweater">
+                    <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&h=400&fit=crop" alt="Áo len nữ" data-editable="banner_img_woman_sweater">
                     <div class="banner-overlay">
-                        <h3>ÁO LEN NỮ</h3>
+                        <h3 data-editable="banner_title_woman_sweater">ÁO LEN NỮ</h3>
                         <span class="banner-cta">Xem ngay →</span>
                     </div>
                 </a>
-                <a href="#" class="banner-item">
-                    <img src="https://media.canifa.com/Simiconnector/banner_homewear.webp" alt="Đồ mặc nhà">
+                <a th:href="@{/products(category='NỮ')}" class="banner-item" data-editable-link="banner_link_woman_homewear">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=400&fit=crop" alt="Đồ mặc nhà" data-editable="banner_img_woman_homewear">
                     <div class="banner-overlay">
-                        <h3>ĐỒ MẶC NHÀ</h3>
+                        <h3 data-editable="banner_title_woman_homewear">ĐỒ MẶC NHÀ</h3>
                         <span class="banner-cta">Xem ngay →</span>
                     </div>
                 </a>
@@ -188,24 +174,24 @@
     <section class="category-banners">
         <div class="container">
             <div class="banner-grid reverse">
-                <a href="#" class="banner-item">
-                    <img src="https://media.canifa.com/Simiconnector/banner_man_jacket.webp" alt="Áo khoác nam">
+                <a th:href="@{/products(category='NAM')}" class="banner-item" data-editable-link="banner_link_man_jacket">
+                    <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&h=400&fit=crop" alt="Áo khoác nam" data-editable="banner_img_man_jacket">
                     <div class="banner-overlay">
-                        <h3>ÁO KHOÁC NAM</h3>
+                        <h3 data-editable="banner_title_man_jacket">ÁO KHOÁC NAM</h3>
                         <span class="banner-cta">Xem ngay →</span>
                     </div>
                 </a>
-                <a href="#" class="banner-item">
-                    <img src="https://media.canifa.com/Simiconnector/banner_man_sweater.webp" alt="Áo len nam">
+                <a th:href="@{/products(category='NAM')}" class="banner-item" data-editable-link="banner_link_man_sweater">
+                    <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600&h=400&fit=crop" alt="Áo len nam" data-editable="banner_img_man_sweater">
                     <div class="banner-overlay">
-                        <h3>ÁO LEN NAM</h3>
+                        <h3 data-editable="banner_title_man_sweater">ÁO LEN NAM</h3>
                         <span class="banner-cta">Xem ngay →</span>
                     </div>
                 </a>
-                <a href="#" class="banner-item large">
-                    <img src="https://media.canifa.com/Simiconnector/banner_man_homewear.webp" alt="Đồ mặc nhà nam">
+                <a th:href="@{/products(category='NAM')}" class="banner-item large" data-editable-link="banner_link_man_homewear">
+                    <img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&h=600&fit=crop" alt="Đồ mặc nhà nam" data-editable="banner_img_man_homewear">
                     <div class="banner-overlay">
-                        <h3>ĐỒ MẶC NHÀ NAM</h3>
+                        <h3 data-editable="banner_title_man_homewear">ĐỒ MẶC NHÀ NAM</h3>
                         <span class="banner-cta">Xem ngay →</span>
                     </div>
                 </a>
@@ -216,24 +202,24 @@
     <!-- Special Collections -->
     <section class="collections-section">
         <div class="container">
-            <h2 class="section-title">BỘ SƯU TẬP ĐẶC BIỆT</h2>
+            <h2 class="section-title" data-editable="section_title_collections">BỘ SƯU TẬP ĐẶC BIỆT</h2>
             <div class="collections-grid">
-                <a href="#" class="collection-item">
-                    <img src="https://media.canifa.com/Simiconnector/bst_disney.webp" alt="BST Disney">
+                <a th:href="@{/products(category='BÉ GÁI')}" class="collection-item" data-editable-link="collection_link_disney">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=500&h=400&fit=crop" alt="BST Disney" data-editable="collection_img_disney">
                     <div class="collection-info">
-                        <span class="collection-name">Disney Collection</span>
+                        <span class="collection-name" data-editable="collection_name_disney">Disney Collection</span>
                     </div>
                 </a>
-                <a href="#" class="collection-item">
-                    <img src="https://media.canifa.com/Simiconnector/bst_doraemon.webp" alt="BST Doraemon">
+                <a th:href="@{/products(category='BÉ TRAI')}" class="collection-item" data-editable-link="collection_link_doraemon">
+                    <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=500&h=400&fit=crop" alt="BST Doraemon" data-editable="collection_img_doraemon">
                     <div class="collection-info">
-                        <span class="collection-name">Doraemon Collection</span>
+                        <span class="collection-name" data-editable="collection_name_doraemon">Doraemon Collection</span>
                     </div>
                 </a>
-                <a href="#" class="collection-item">
-                    <img src="https://media.canifa.com/Simiconnector/bst_canifa_s.webp" alt="Canifa S">
+                <a th:href="@{/products}" class="collection-item" data-editable-link="collection_link_canifa">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=500&h=400&fit=crop" alt="Canifa S" data-editable="collection_img_canifa">
                     <div class="collection-info">
-                        <span class="collection-name">Canifa S</span>
+                        <span class="collection-name" data-editable="collection_name_canifa">Canifa S</span>
                     </div>
                 </a>
             </div>
@@ -243,19 +229,19 @@
     <!-- Kids Section -->
     <section class="kids-section">
         <div class="container">
-            <h2 class="section-title">THỜI TRANG TRẺ EM</h2>
+            <h2 class="section-title" data-editable="section_title_kids">THỜI TRANG TRẺ EM</h2>
             <div class="kids-grid">
-                <a href="#" class="kids-banner girl">
-                    <img src="https://media.canifa.com/Simiconnector/banner_girl.webp" alt="Bé gái">
+                <a th:href="@{/products(category='BÉ GÁI')}" class="kids-banner girl" data-editable-link="kids_link_girl">
+                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=500&fit=crop" alt="Bé gái" data-editable="kids_img_girl">
                     <div class="kids-overlay">
-                        <h3>BÉ GÁI</h3>
-                        <span>Xem ngay →</span>
+                        <h3 data-editable="kids_title_girl">BÉ GÁI</h3>
+                        <span class="kids-cta">Xem ngay →</span>
                     </div>
                 </a>
-                <a href="#" class="kids-banner boy">
-                    <img src="https://media.canifa.com/Simiconnector/banner_boy.webp" alt="Bé trai">
+                <a th:href="@{/products(category='BÉ TRAI')}" class="kids-banner boy" data-editable-link="kids_link_boy">
+                    <img src="https://images.unsplash.com/photo-1519457431-44ccd64a579b?w=600&h=500&fit=crop" alt="Bé trai" data-editable="kids_img_boy">
                     <div class="kids-overlay">
-                        <h3>BÉ TRAI</h3>
+                        <h3 data-editable="kids_title_boy">BÉ TRAI</h3>
                         <span>Xem ngay →</span>
                     </div>
                 </a>
@@ -266,11 +252,11 @@
     <!-- Blog Section -->
     <section class="blog-section">
         <div class="container">
-            <h2 class="section-title">TIN TỨC & CẢM HỨNG</h2>
+            <h2 class="section-title" data-editable="section_title_blog">TIN TỨC & CẢM HỨNG</h2>
             <div class="blog-grid">
                 <a href="#" class="blog-card">
                     <div class="blog-image">
-                        <img src="https://media.canifa.com/Simiconnector/blog1.webp" alt="Blog post">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=300&fit=crop" alt="Blog post">
                     </div>
                     <div class="blog-content">
                         <span class="blog-date">15/01/2026</span>
@@ -281,7 +267,7 @@
                 </a>
                 <a href="#" class="blog-card">
                     <div class="blog-image">
-                        <img src="https://media.canifa.com/Simiconnector/blog2.webp" alt="Blog post">
+                        <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=400&h=300&fit=crop" alt="Blog post">
                     </div>
                     <div class="blog-content">
                         <span class="blog-date">12/01/2026</span>
@@ -292,7 +278,7 @@
                 </a>
                 <a href="#" class="blog-card">
                     <div class="blog-image">
-                        <img src="https://media.canifa.com/Simiconnector/blog3.webp" alt="Blog post">
+                        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=300&fit=crop" alt="Blog post">
                     </div>
                     <div class="blog-content">
                         <span class="blog-date">10/01/2026</span>
@@ -408,6 +394,89 @@
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <script>
+        function saveVoucher(button) {
+            const voucherId = button.getAttribute('data-voucher-id');
+            
+            if (!voucherId) return;
+            
+            // Change button state immediately
+            button.disabled = true;
+            button.textContent = 'Đang lưu...';
+            
+            fetch('/vouchers/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `voucherId=${voucherId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.textContent = 'Đã lưu';
+                    button.classList.add('saved');
+                    showToast(data.message, 'success');
+                } else {
+                    button.textContent = 'Lưu';
+                    button.disabled = false;
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                button.textContent = 'Lưu';
+                button.disabled = false;
+                showToast('Có lỗi xảy ra. Vui lòng thử lại', 'error');
+                console.error('Error:', error);
+            });
+        }
+        
+        function showToast(message, type) {
+            // Simple toast notification
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#dc3545'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+    
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+        
+        .voucher-btn.saved {
+            background: #6c757d !important;
+            cursor: not-allowed !important;
+            opacity: 0.7;
+        }
+        
+        .voucher-btn.saved:hover {
+            background: #6c757d !important;
+        }
+    </style>
 </body>
 
 </html>

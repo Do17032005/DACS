@@ -4,6 +4,41 @@
 <head>
     <div th:replace="~{fragments/head :: head}"></div>
     <title>Thanh toán | CANIFA</title>
+    <style>
+        .order-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .order-item-img {
+            width: 60px;
+            height: 75px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .order-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .order-item-info {
+            flex: 1;
+        }
+        .order-item-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .order-item-variant {
+            font-size: 12px;
+            color: #666;
+        }
+        .order-item-price {
+            font-weight: 600;
+            color: #DA291C;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,44 +47,44 @@
     <div class="checkout-page">
         <!-- ... existing content remains same ... -->
         <h1>Thanh toán</h1>
-        <div class="checkout-container">
+        <form class="checkout-container" id="checkoutForm" th:action="@{/orders/place}" method="post">
             <!-- ... existing container content ... -->
             <div class="checkout-form">
                 <div class="form-section">
                     <h2 class="section-title"><span class="section-number">1</span>Thông tin giao hàng</h2>
                     <div class="form-row">
                         <div class="form-group"><label class="form-label">Họ tên *</label><input type="text"
-                                class="form-control" placeholder="Nhập họ tên" id="fullName"></div>
+                                class="form-control" placeholder="Nhập họ tên" id="fullName" name="customerName" required></div>
                         <div class="form-group"><label class="form-label">Số điện thoại *</label><input type="tel"
-                                class="form-control" placeholder="Nhập số điện thoại" id="phone"></div>
+                                class="form-control" placeholder="Nhập số điện thoại" id="phone" name="customerPhone" required></div>
                     </div>
                     <div class="form-group"><label class="form-label">Email</label><input type="email"
-                            class="form-control" placeholder="Nhập email" id="email"></div>
+                            class="form-control" placeholder="Nhập email" id="email" name="customerEmail"></div>
                     <div class="form-row">
                         <div class="form-group"><label class="form-label">Tỉnh/Thành phố *</label>
-                            <select class="form-control">
-                                <option>Chọn Tỉnh/Thành phố</option>
-                                <option>TP. Hồ Chí Minh</option>
-                                <option>Hà Nội</option>
-                                <option>Đà Nẵng</option>
+                            <select class="form-control" name="shippingCity" required>
+                                <option value="">Chọn Tỉnh/Thành phố</option>
+                                <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                                <option value="Hà Nội">Hà Nội</option>
+                                <option value="Đà Nẵng">Đà Nẵng</option>
                             </select>
                         </div>
                         <div class="form-group"><label class="form-label">Quận/Huyện *</label>
-                            <select class="form-control">
-                                <option>Chọn Quận/Huyện</option>
+                            <select class="form-control" name="shippingDistrict">
+                                <option value="">Chọn Quận/Huyện</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group"><label class="form-label">Địa chỉ chi tiết *</label><input type="text"
-                            class="form-control" placeholder="Số nhà, tên đường, phường/xã"></div>
+                            class="form-control" placeholder="Số nhà, tên đường, phường/xã" name="shippingAddress" required></div>
                     <div class="form-group"><label class="form-label">Ghi chú</label><textarea class="form-control"
-                            rows="3" placeholder="Ghi chú cho đơn hàng (nếu có)"></textarea></div>
+                            rows="3" placeholder="Ghi chú cho đơn hàng (nếu có)" name="note"></textarea></div>
                 </div>
 
                 <div class="form-section">
                     <h2 class="section-title"><span class="section-number">2</span>Phương thức thanh toán</h2>
                     <div class="payment-methods">
-                        <label class="payment-option active"><input type="radio" name="payment" value="cod" checked><img
+                        <label class="payment-option active"><input type="radio" name="paymentMethod" value="COD" checked><img
                                 src="https://cdn-icons-png.flaticon.com/128/2331/2331970.png" class="payment-logo"
                                 style="height:35px">
                             <div class="payment-info">
@@ -57,21 +92,21 @@
                                 <div class="payment-desc">Thanh toán bằng tiền mặt khi nhận hàng</div>
                             </div>
                         </label>
-                        <label class="payment-option"><input type="radio" name="payment" value="vnpay"><img
+                        <label class="payment-option"><input type="radio" name="paymentMethod" value="VNPAY"><img
                                 src="https://vnpay.vn/assets/images/logo-icon/logo-primary.svg" class="payment-logo">
                             <div class="payment-info">
                                 <div class="payment-name">Ví VNPAY / QR Code</div>
                                 <div class="payment-desc">Thanh toán qua ví điện tử VNPAY</div>
                             </div>
                         </label>
-                        <label class="payment-option"><input type="radio" name="payment" value="momo"><img
+                        <label class="payment-option"><input type="radio" name="paymentMethod" value="MOMO"><img
                                 src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" class="payment-logo">
                             <div class="payment-info">
                                 <div class="payment-name">Ví MoMo</div>
                                 <div class="payment-desc">Thanh toán qua ví điện tử MoMo</div>
                             </div>
                         </label>
-                        <label class="payment-option"><input type="radio" name="payment" value="bank"><img
+                        <label class="payment-option"><input type="radio" name="paymentMethod" value="BANK"><img
                                 src="https://cdn-icons-png.flaticon.com/128/2830/2830284.png" class="payment-logo"
                                 style="height:35px">
                             <div class="payment-info">
@@ -85,31 +120,43 @@
 
             <div class="order-summary">
                 <h2 class="summary-title">Đơn hàng của bạn</h2>
-                <div class="order-items" id="orderItems"></div>
-                <div class="summary-row"><span>Tạm tính</span><span id="subtotal">0đ</span></div>
+                <div class="order-items" id="orderItems">
+                    <div th:each="item : ${cartItems}" class="order-item">
+                        <div class="order-item-img">
+                            <img th:src="${item.product.imageUrl}" alt="Product">
+                        </div>
+                        <div class="order-item-info">
+                            <div class="order-item-name" th:text="${item.product.name}">Tên sản phẩm</div>
+                            <div class="order-item-variant" th:text="${item.color + ' / ' + item.size + ' x' + item.quantity}">Màu / Size x1</div>
+                        </div>
+                        <div class="order-item-price" th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</div>
+                    </div>
+                </div>
+
+                <!-- Voucher section -->
+                <div class="voucher-section" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="voucherInput" class="form-control" placeholder="Nhập mã giảm giá" style="flex: 1;">
+                        <button type="button" onclick="applyVoucher()" class="btn" style="background: #DA291C; color: white; padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer;">Áp dụng</button>
+                    </div>
+                    <div id="voucherMessage" style="font-size: 13px; margin-top: 8px;"></div>
+                    <input type="hidden" name="voucherCode" id="appliedVoucherCode">
+                </div>
+
+                <div class="summary-row"><span>Tạm tính</span><span id="subtotal" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</span></div>
+                <div class="summary-row" id="discountRow" style="display: none; color: #DA291C;"><span>Giảm giá</span><span id="discountAmount">0đ</span></div>
                 <div class="summary-row"><span>Phí vận chuyển</span><span>Miễn phí</span></div>
-                <div class="summary-row total"><span>Tổng cộng</span><span class="value" id="total">0đ</span></div>
-                <button class="btn-place-order" onclick="placeOrder()">🔒 Đặt hàng</button>
+                <div class="summary-row total"><span>Tổng cộng</span><span class="value" id="total" th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT') + 'đ'}">0đ</span></div>
+                <button type="submit" class="btn-place-order">🔒 Đặt hàng</button>
                 <p class="secure-badge">🔐 Thanh toán an toàn & bảo mật</p>
             </div>
-        </div>
+        </form>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
-    <script>
-        function renderOrderItems() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (cart.length === 0) { window.location.href = '/cart'; return; }
-            let html = '', subtotal = 0;
-            cart.forEach(item => {
-                const itemTotal = item.price * item.qty;
-                subtotal += itemTotal;
-                html += `<div class="order-item"><div class="order-item-img"><img src="${item.image}"></div><div class="order-item-info"><div class="order-item-name">${item.name}</div><div class="order-item-variant">${item.color} / ${item.size} x${item.qty}</div></div><div class="order-item-price">${itemTotal.toLocaleString()}đ</div></div>`;
-            });
-            document.getElementById('orderItems').innerHTML = html;
-            document.getElementById('subtotal').textContent = subtotal.toLocaleString() + 'đ';
-            document.getElementById('total').textContent = subtotal.toLocaleString() + 'đ';
-        }
+    <script th:inline="javascript">
+        let appliedDiscount = 0;
+        const originalTotal = /*[[${totalAmount}]]*/ 0;
 
         document.querySelectorAll('.payment-option').forEach(option => {
             option.addEventListener('click', function () {
@@ -118,39 +165,74 @@
             });
         });
 
-        function placeOrder() {
-            const name = document.getElementById('fullName').value;
-            const phone = document.getElementById('phone').value;
-            if (!name || !phone) { showToast('Vui lòng điền đầy đủ thông tin', 'error'); return; }
-
-            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
-
-            if (paymentMethod === 'vnpay') {
-                showToast('Đang chuyển đến VNPAY...', 'info');
-                setTimeout(() => { alert('Demo: Chuyển hướng đến cổng thanh toán VNPAY'); processOrder(); }, 1500);
-            } else if (paymentMethod === 'momo') {
-                showToast('Đang chuyển đến MoMo...', 'info');
-                setTimeout(() => { alert('Demo: Chuyển hướng đến ứng dụng MoMo'); processOrder(); }, 1500);
-            } else {
-                processOrder();
+        function applyVoucher() {
+            const voucherCode = document.getElementById('voucherInput').value.trim();
+            const messageDiv = document.getElementById('voucherMessage');
+            
+            if (!voucherCode) {
+                messageDiv.innerHTML = '<span style="color: #dc3545;">⚠️ Vui lòng nhập mã giảm giá</span>';
+                return;
             }
+
+            messageDiv.innerHTML = '<span style="color: #666;">⏳ Đang kiểm tra...</span>';
+
+            fetch('/orders/apply-voucher', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `voucherCode=${encodeURIComponent(voucherCode)}&orderAmount=${originalTotal}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    appliedDiscount = data.discount;
+                    
+                    // Update UI
+                    document.getElementById('discountRow').style.display = 'flex';
+                    document.getElementById('discountAmount').textContent = '-' + formatCurrency(data.discount);
+                    document.getElementById('total').textContent = formatCurrency(data.finalAmount);
+                    document.getElementById('appliedVoucherCode').value = voucherCode;
+                    
+                    // Show success message with remaining usage
+                    let message = `<span style="color: #28a745;">✓ ${data.message}</span><br>`;
+                    message += `<span style="color: #666; font-size: 12px;">${data.voucherTitle} - Giảm ${formatCurrency(data.discount)}</span>`;
+                    
+                    if (data.remainingUsage !== null) {
+                        message += `<br><span style="color: #ff6b00; font-size: 12px;">⚡ Còn ${data.remainingUsage} lượt sử dụng</span>`;
+                    }
+                    
+                    messageDiv.innerHTML = message;
+                    
+                    // Disable input
+                    document.getElementById('voucherInput').disabled = true;
+                } else {
+                    messageDiv.innerHTML = `<span style="color: #dc3545;">⚠️ ${data.message}</span>`;
+                    resetVoucher();
+                }
+            })
+            .catch(error => {
+                messageDiv.innerHTML = '<span style="color: #dc3545;">⚠️ Có lỗi xảy ra. Vui lòng thử lại</span>';
+                console.error('Error:', error);
+            });
         }
 
-        function processOrder() {
-            localStorage.removeItem('cart');
-            showToast('Đặt hàng thành công! Cảm ơn bạn đã mua hàng', 'success');
-            setTimeout(() => { window.location.href = '/order-success'; }, 2000);
+        function resetVoucher() {
+            appliedDiscount = 0;
+            document.getElementById('discountRow').style.display = 'none';
+            document.getElementById('total').textContent = formatCurrency(originalTotal);
+            document.getElementById('appliedVoucherCode').value = '';
         }
 
-        // Pre-fill user info
-        const user = JSON.parse(localStorage.getItem('canifaUser'));
-        if (user) {
-            document.getElementById('fullName').value = user.name || '';
-            document.getElementById('phone').value = user.phone || '';
-            document.getElementById('email').value = user.email || '';
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN').format(amount) + 'đ';
         }
 
-        renderOrderItems();
+        // Show success/error messages
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            showToast(urlParams.get('error'), 'error');
+        }
     </script>
 </body>
 

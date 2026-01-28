@@ -6,14 +6,14 @@
         <!-- Top Promo Banner -->
         <div class="top-banner">
             <div class="container">
-                <a href="#" class="promo-link">
-                    <span class="promo-text">CLOTHESSHOP SALE</span>
+                <a th:href="@{/products}" class="promo-link">
+                    <span class="promo-text" data-editable="promo_title" data-edit-label="Tiêu đề promo">CLOTHESSHOP SALE</span>
                     <span class="promo-divider">|</span>
-                    <span>GIẢM TỚI 50%</span>
+                    <span data-editable="promo_discount" data-edit-label="Giảm giá">GIẢM TỚI 50%</span>
                     <span class="promo-divider">|</span>
-                    <span>MUA 2 NHẬN 3</span>
+                    <span data-editable="promo_deal" data-edit-label="Deal">MUA 2 NHẬN 3</span>
                     <span class="promo-divider">|</span>
-                    <span>HOT DEALS</span>
+                    <span data-editable="promo_hot" data-edit-label="Hot deals">HOT DEALS</span>
                 </a>
             </div>
         </div>
@@ -25,15 +25,15 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <span class="sub-header-icon">🔄</span>
-                            <span>ĐỔI HÀNG MIỄN PHÍ - TẠI TẤT CẢ CỬA HÀNG TRONG 30 NGÀY</span>
+                            <span data-editable="sub_header_return" data-edit-label="Chính sách đổi hàng">ĐỔI HÀNG MIỄN PHÍ - TẠI TẤT CẢ CỬA HÀNG TRONG 30 NGÀY</span>
                         </div>
                         <div class="swiper-slide">
                             <span class="sub-header-icon">✓</span>
-                            <span>100% HÀNG CHÍNH HÃNG</span>
+                            <span data-editable="sub_header_authentic" data-edit-label="Hàng chính hãng">100% HÀNG CHÍNH HÃNG</span>
                         </div>
                         <div class="swiper-slide">
                             <span class="sub-header-icon">🚚</span>
-                            <span>FREESHIP ĐƠN TỪ 499K</span>
+                            <span data-editable="sub_header_freeship" data-edit-label="Freeship">FREESHIP ĐƠN TỪ 499K</span>
                         </div>
                     </div>
                 </div>
@@ -46,20 +46,20 @@
                 <div class="header-content">
                     <!-- Logo -->
                     <a th:href="@{/}" class="logo">
-                        <img src="/images/logo.png" alt="ClothesShop" class="logo-img" style="height: 40px;">
+                        <img th:src="@{/images/logo.png}" alt="ClothesShop" class="logo-img" style="height: 40px;">
                     </a>
 
                     <!-- Search Bar -->
-                    <div class="search-bar">
-                        <input type="text" placeholder="Tìm kiếm" class="search-input" th:value="${query}">
-                        <button class="search-btn">
+                    <form th:action="@{/products}" method="get" class="search-bar">
+                        <input type="text" name="search" placeholder="Tìm kiếm sản phẩm..." class="search-input" th:value="${searchKeyword}">
+                        <button type="submit" class="search-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
                         </button>
-                    </div>
+                    </form>
 
                     <!-- Header Icons -->
                     <div class="header-icons">
@@ -75,7 +75,7 @@
                             </svg>
                             <span>Admin</span>
                         </a>
-                        <a href="/chat" class="header-icon-link">
+                        <a th:href="@{/chat}" class="header-icon-link">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="1.5">
                                 <path d="M12 8V4H8"></path>
@@ -87,7 +87,7 @@
                             </svg>
                             <span>AI Stylist</span>
                         </a>
-                        <a href="#" class="header-icon-link">
+                        <a th:href="@{/products}" class="header-icon-link">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="1.5">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -163,93 +163,93 @@
             <div class="container">
                 <ul class="nav-menu">
                     <li class="nav-item sale-item">
-                        <a href="#" class="nav-link sale-link">SHOPPING DAY</a>
+                        <a th:href="@{/products}" class="nav-link sale-link">SHOPPING DAY</a>
                     </li>
                     <li class="nav-item has-dropdown">
-                        <a th:href="@{/products}" class="nav-link">NỮ</a>
+                        <a th:href="@{/products(category='NỮ')}" class="nav-link">NỮ</a>
                         <div class="mega-menu">
                             <div class="mega-menu-content">
                                 <div class="mega-col">
                                     <h4>Áo</h4>
                                     <ul>
-                                        <li><a href="#">Áo thun</a></li>
-                                        <li><a href="#">Áo sơ mi</a></li>
-                                        <li><a href="#">Áo len</a></li>
-                                        <li><a href="#">Áo khoác</a></li>
-                                        <li><a href="#">Áo hoodie</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Áo thun')}">Áo thun</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Áo sơ mi')}">Áo sơ mi</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Áo len')}">Áo len</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Áo khoác')}">Áo khoác</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Áo hoodie')}">Áo hoodie</a></li>
                                     </ul>
                                 </div>
                                 <div class="mega-col">
                                     <h4>Quần</h4>
                                     <ul>
-                                        <li><a href="#">Quần jean</a></li>
-                                        <li><a href="#">Quần kaki</a></li>
-                                        <li><a href="#">Quần short</a></li>
-                                        <li><a href="#">Quần jogger</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Quần jean')}">Quần jean</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Quần kaki')}">Quần kaki</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Quần short')}">Quần short</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Quần jogger')}">Quần jogger</a></li>
                                     </ul>
                                 </div>
                                 <div class="mega-col">
                                     <h4>Váy & Đầm</h4>
                                     <ul>
-                                        <li><a href="#">Váy</a></li>
-                                        <li><a href="#">Đầm</a></li>
-                                        <li><a href="#">Chân váy</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Váy')}">Váy</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Đầm')}">Đầm</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Chân váy')}">Chân váy</a></li>
                                     </ul>
                                 </div>
                                 <div class="mega-col">
                                     <h4>Đồ mặc nhà</h4>
                                     <ul>
-                                        <li><a href="#">Bộ mặc nhà</a></li>
-                                        <li><a href="#">Đồ ngủ</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Bộ mặc nhà')}">Bộ mặc nhà</a></li>
+                                        <li><a th:href="@{/products(category='NỮ',subcategory='Đồ ngủ')}">Đồ ngủ</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="nav-item has-dropdown">
-                        <a th:href="@{/products}" class="nav-link">NAM</a>
+                        <a th:href="@{/products(category='NAM')}" class="nav-link">NAM</a>
                         <div class="mega-menu">
                             <div class="mega-menu-content">
                                 <div class="mega-col">
                                     <h4>Áo</h4>
                                     <ul>
-                                        <li><a href="#">Áo thun</a></li>
-                                        <li><a href="#">Áo polo</a></li>
-                                        <li><a href="#">Áo sơ mi</a></li>
-                                        <li><a href="#">Áo khoác</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Áo thun')}">Áo thun</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Áo polo')}">Áo polo</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Áo sơ mi')}">Áo sơ mi</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Áo khoác')}">Áo khoác</a></li>
                                     </ul>
                                 </div>
                                 <div class="mega-col">
                                     <h4>Quần</h4>
                                     <ul>
-                                        <li><a href="#">Quần jean</a></li>
-                                        <li><a href="#">Quần kaki</a></li>
-                                        <li><a href="#">Quần short</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Quần jean')}">Quần jean</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Quần kaki')}">Quần kaki</a></li>
+                                        <li><a th:href="@{/products(category='NAM',subcategory='Quần short')}">Quần short</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="nav-item has-dropdown">
-                        <a th:href="@{/products}" class="nav-link">BÉ GÁI</a>
+                        <a th:href="@{/products(category='BÉ GÁI')}" class="nav-link">BÉ GÁI</a>
                     </li>
                     <li class="nav-item has-dropdown">
-                        <a th:href="@{/products}" class="nav-link">BÉ TRAI</a>
+                        <a th:href="@{/products(category='BÉ TRAI')}" class="nav-link">BÉ TRAI</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">SẢN PHẨM MỚI</a>
+                        <a th:href="@{/products(isNew=true)}" class="nav-link">SẢN PHẨM MỚI</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">CANIFA S</a>
+                        <a th:href="@{/products(bestseller=true)}" class="nav-link">BÁN CHẠY</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">LICENSE</a>
+                        <a th:href="@{/products}" class="nav-link">KHUYẾN MÃI</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">SCHOOL</a>
+                        <a th:href="@{/products(category='SCHOOL')}" class="nav-link">SCHOOL</a>
                     </li>
                     <li class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">ĐỒNG PHỤC</a>
+                        <a th:href="@{/products(category='SCHOOL')}" class="nav-link">ĐỒNG PHỤC</a>
                     </li>
                 </ul>
             </div>

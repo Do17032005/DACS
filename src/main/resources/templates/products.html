@@ -263,12 +263,26 @@
             background: white;
             cursor: pointer;
             font-weight: 500;
+            text-decoration: none;
+            color: #333;
+            display: inline-block;
+        }
+
+        .page-btn:hover:not(.disabled):not(.active) {
+            background: #f5f5f5;
+            border-color: #DA291C;
         }
 
         .page-btn.active {
             background: #DA291C;
             color: white;
             border-color: #DA291C;
+        }
+
+        .page-btn.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            background: #f9f9f9;
         }
 
         @media (max-width: 1200px) {
@@ -304,69 +318,212 @@
 
     <div class="products-page">
         <aside class="filters-sidebar">
-            <div class="filter-section">
-                <h3 class="filter-title">Danh mục</h3>
-                <div class="filter-list"><label class="filter-item"><input type="checkbox" checked> Áo thun
-                        (45)</label><label class="filter-item"><input type="checkbox"> Áo sơ mi (32)</label><label
-                        class="filter-item"><input type="checkbox"> Áo khoác (28)</label><label
-                        class="filter-item"><input type="checkbox"> Áo len (21)</label><label class="filter-item"><input
-                            type="checkbox"> Quần jean (38)</label></div>
-            </div>
-            <div class="filter-section">
-                <h3 class="filter-title">Màu sắc</h3>
-                <div class="filter-colors"><span class="color-option active" style="background:#000"></span><span
-                        class="color-option" style="background:#fff;border:1px solid #ddd"></span><span
-                        class="color-option" style="background:#DA291C"></span><span class="color-option"
-                        style="background:#1e40af"></span><span class="color-option"
-                        style="background:#f5f5dc"></span><span class="color-option" style="background:#10b981"></span>
+            <form id="filterForm" th:action="@{/products}" method="get">
+                <!-- Hidden fields to preserve other params -->
+                <input type="hidden" name="page" value="0">
+                <input type="hidden" name="sort" id="hiddenSort" th:value="${currentSort ?: 'newest'}">
+                
+                <!-- Tìm kiếm theo tên -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Tìm kiếm</h3>
+                    <div class="search-filter">
+                        <input type="text" name="name" class="search-input" placeholder="Nhập tên sản phẩm..." 
+                               th:value="${selectedName}" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">
+                    </div>
                 </div>
-            </div>
-            <div class="filter-section">
-                <h3 class="filter-title">Kích thước</h3>
-                <div class="filter-sizes"><span class="size-option">XS</span><span
-                        class="size-option active">S</span><span class="size-option">M</span><span
-                        class="size-option">L</span><span class="size-option">XL</span><span
-                        class="size-option">XXL</span></div>
-            </div>
-            <div class="filter-section">
-                <h3 class="filter-title">Giá</h3>
-                <div class="price-range"><input type="number" class="price-input" placeholder="Từ"><span>-</span><input
-                        type="number" class="price-input" placeholder="Đến"></div>
-            </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">Danh mục</h3>
+                    <div class="filter-list">
+                        <label th:each="cat : ${allCategories}" class="filter-item">
+                            <input type="radio" name="category" th:value="${cat}" 
+                                   th:checked="${selectedCategory == cat}">
+                            <span th:text="${cat}">Category</span>
+                        </label>
+                        <label class="filter-item">
+                            <input type="radio" name="category" value="" 
+                                   th:checked="${selectedCategory == null or selectedCategory == ''}">
+                            <span>Tất cả</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Thương hiệu -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Thương hiệu</h3>
+                    <div class="filter-list">
+                        <label th:each="b : ${allBrands}" class="filter-item">
+                            <input type="radio" name="brand" th:value="${b}" 
+                                   th:checked="${selectedBrand == b}">
+                            <span th:text="${b}">Brand</span>
+                        </label>
+                        <label class="filter-item">
+                            <input type="radio" name="brand" value="" 
+                                   th:checked="${selectedBrand == null or selectedBrand == ''}">
+                            <span>Tất cả</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Chất liệu -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Chất liệu</h3>
+                    <div class="filter-list">
+                        <label th:each="m : ${allMaterials}" class="filter-item">
+                            <input type="radio" name="material" th:value="${m}" 
+                                   th:checked="${selectedMaterial == m}">
+                            <span th:text="${m}">Material</span>
+                        </label>
+                        <label class="filter-item">
+                            <input type="radio" name="material" value="" 
+                                   th:checked="${selectedMaterial == null or selectedMaterial == ''}">
+                            <span>Tất cả</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3 class="filter-title">Màu sắc</h3>
+                    <div class="filter-colors">
+                        <span class="color-option" data-color="Đen" style="background:#000" 
+                              th:classappend="${selectedColor == 'Đen'} ? ' active' : ''"></span>
+                        <span class="color-option" data-color="Trắng" style="background:#fff;border:1px solid #ddd"
+                              th:classappend="${selectedColor == 'Trắng'} ? ' active' : ''"></span>
+                        <span class="color-option" data-color="Đỏ" style="background:#DA291C"
+                              th:classappend="${selectedColor == 'Đỏ'} ? ' active' : ''"></span>
+                        <span class="color-option" data-color="Xanh dương" style="background:#1e40af"
+                              th:classappend="${selectedColor == 'Xanh dương'} ? ' active' : ''"></span>
+                        <span class="color-option" data-color="Be" style="background:#f5f5dc"
+                              th:classappend="${selectedColor == 'Be'} ? ' active' : ''"></span>
+                        <span class="color-option" data-color="Xanh lá" style="background:#10b981"
+                              th:classappend="${selectedColor == 'Xanh lá'} ? ' active' : ''"></span>
+                    </div>
+                    <input type="hidden" name="color" id="colorInput" th:value="${selectedColor}">
+                </div>
+                <div class="filter-section">
+                    <h3 class="filter-title">Kích thước</h3>
+                    <div class="filter-sizes">
+                        <span class="size-option" data-size="XS" th:classappend="${selectedSize == 'XS'} ? ' active' : ''">XS</span>
+                        <span class="size-option" data-size="S" th:classappend="${selectedSize == 'S'} ? ' active' : ''">S</span>
+                        <span class="size-option" data-size="M" th:classappend="${selectedSize == 'M'} ? ' active' : ''">M</span>
+                        <span class="size-option" data-size="L" th:classappend="${selectedSize == 'L'} ? ' active' : ''">L</span>
+                        <span class="size-option" data-size="XL" th:classappend="${selectedSize == 'XL'} ? ' active' : ''">XL</span>
+                        <span class="size-option" data-size="XXL" th:classappend="${selectedSize == 'XXL'} ? ' active' : ''">XXL</span>
+                    </div>
+                    <input type="hidden" name="size" id="sizeInput" th:value="${selectedSize}">
+                </div>
+                <div class="filter-section">
+                    <h3 class="filter-title">Giá</h3>
+                    <div class="price-range">
+                        <input type="number" class="price-input" name="minPrice" placeholder="Từ" 
+                               th:value="${minPrice}" min="0">
+                        <span>-</span>
+                        <input type="number" class="price-input" name="maxPrice" placeholder="Đến" 
+                               th:value="${maxPrice}" min="0">
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <button type="submit" class="filter-btn" style="width:100%;padding:12px;background:#111;color:#fff;border:none;cursor:pointer;font-weight:600;margin-top:10px;">Áp dụng bộ lọc</button>
+                    <button type="button" class="filter-btn" onclick="clearFilters()" style="width:100%;padding:12px;background:#fff;color:#111;border:1px solid #ddd;cursor:pointer;font-weight:600;margin-top:8px;">Xóa bộ lọc</button>
+                </div>
+            </form>
         </aside>
 
         <main class="products-main">
-                <div class="products-header"><span class="products-count"
-                    th:text="${#lists.isEmpty(products)} ? 'Không có sản phẩm phù hợp' : 'Tìm thấy ' + products.size() + ' sản phẩm' + (query != null && !#strings.isEmpty(query) ? ' cho \"' + query + '\"' : '')">Hiển
-                    thị 1-24 của 156 sản phẩm</span><select
-                    class="sort-select">
-                    <option>Mới nhất</option>
-                    <option>Giá: Thấp đến cao</option>
-                    <option>Giá: Cao đến thấp</option>
-                    <option>Bán chạy</option>
-                </select></div>
+                <div class="products-header">
+                    <span class="products-count" th:text="${#lists.isEmpty(products)} ? 'Không có sản phẩm phù hợp' : 'Tìm thấy ' + ${products.size()} + ' sản phẩm'">
+                        Hiển thị 1-24 của 156 sản phẩm
+                    </span>
+                    <select class="sort-select" id="sortSelect" onchange="applySorting()">
+                        <option value="newest" th:selected="${currentSort == 'newest' or currentSort == null}">Mới nhất</option>
+                        <option value="price_asc" th:selected="${currentSort == 'price_asc'}">Giá: Thấp đến cao</option>
+                        <option value="price_desc" th:selected="${currentSort == 'price_desc'}">Giá: Cao đến thấp</option>
+                        <option value="bestseller" th:selected="${currentSort == 'bestseller'}">Bán chạy</option>
+                    </select>
+                </div>
             <div class="products-grid">
-                <a th:each="product : ${products}" th:href="@{'/product/' + ${product.id}}" class="product-card">
+                <a th:each="product : ${products}" th:href="@{'/products/' + ${product.id}}" class="product-card">
                     <div class="product-image">
                         <img th:src="${product.imageUrl}" th:alt="${product.name}">
+                        <!-- Discount badge -->
+                        <span th:if="${product.discountPercent != null and product.discountPercent > 0}" 
+                              class="badge bg-danger position-absolute top-0 end-0 m-2" 
+                              th:text="'-' + ${product.discountPercent} + '%'">-25%</span>
                     </div>
                     <div class="product-info">
                         <h3 class="product-name" th:text="${product.name}">Tên sản phẩm</h3>
                         <div class="product-price">
                             <span class="price-current"
                                 th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}">299,000đ</span>
+                            <!-- Original price if discount exists -->
+                            <span th:if="${product.originalPrice != null and product.discountPercent > 0}" 
+                                  class="price-original ms-2 text-muted text-decoration-line-through"
+                                  th:text="${#numbers.formatDecimal(product.originalPrice, 0, 'COMMA', 0, 'POINT') + 'đ'}">399,000đ</span>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="pagination"><button class="page-btn">←</button><button class="page-btn active">1</button><button
-                    class="page-btn">2</button><button class="page-btn">3</button><button
-                    class="page-btn">4</button><button class="page-btn">→</button></div>
+            <div class="pagination" th:if="${totalPages > 1}">
+                <!-- Previous button -->
+                <a th:if="${currentPage > 0}" 
+                   th:href="@{/products(page=${currentPage - 1}, category=${selectedCategory}, search=${searchKeyword}, isNew=${isNewFilter}, bestseller=${bestsellerFilter}, sort=${currentSort}, minPrice=${minPrice}, maxPrice=${maxPrice}, size=${selectedSize}, color=${selectedColor}, brand=${selectedBrand}, material=${selectedMaterial}, name=${selectedName})}" 
+                   class="page-btn">←</a>
+                <span th:if="${currentPage == 0}" class="page-btn disabled">←</span>
+                
+                <!-- Page numbers -->
+                <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:if="${i != currentPage}" 
+                       th:href="@{/products(page=${i}, category=${selectedCategory}, search=${searchKeyword}, isNew=${isNewFilter}, bestseller=${bestsellerFilter}, sort=${currentSort}, minPrice=${minPrice}, maxPrice=${maxPrice}, size=${selectedSize}, color=${selectedColor}, brand=${selectedBrand}, material=${selectedMaterial}, name=${selectedName})}" 
+                       class="page-btn" th:text="${i + 1}">1</a>
+                    <span th:if="${i == currentPage}" class="page-btn active" th:text="${i + 1}">1</span>
+                </th:block>
+                
+                <!-- Next button -->
+                <a th:if="${currentPage < totalPages - 1}" 
+                   th:href="@{/products(page=${currentPage + 1}, category=${selectedCategory}, search=${searchKeyword}, isNew=${isNewFilter}, bestseller=${bestsellerFilter}, sort=${currentSort}, minPrice=${minPrice}, maxPrice=${maxPrice}, size=${selectedSize}, color=${selectedColor}, brand=${selectedBrand}, material=${selectedMaterial}, name=${selectedName})}" 
+                   class="page-btn">→</a>
+                <span th:if="${currentPage >= totalPages - 1}" class="page-btn disabled">→</span>
+            </div>
         </main>
     </div>
 
     <div th:replace="~{fragments/footer :: footer}"></div>
-    <script src="js/main.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:inline="javascript">
+        function applySorting() {
+            const sortValue = document.getElementById('sortSelect').value;
+            document.getElementById('hiddenSort').value = sortValue;
+            document.getElementById('filterForm').submit();
+        }
+        
+        // Color selection
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active from all
+                document.querySelectorAll('.color-option').forEach(o => o.classList.remove('active'));
+                // Add active to clicked
+                this.classList.add('active');
+                // Update hidden input
+                document.getElementById('colorInput').value = this.dataset.color;
+            });
+        });
+        
+        // Size selection
+        document.querySelectorAll('.size-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active from all
+                document.querySelectorAll('.size-option').forEach(o => o.classList.remove('active'));
+                // Add active to clicked
+                this.classList.add('active');
+                // Update hidden input
+                document.getElementById('sizeInput').value = this.dataset.size;
+            });
+        });
+        
+        function clearFilters() {
+            window.location.href = '/products';
+        }
+    </script>
 </body>
 
 </html>

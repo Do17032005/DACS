@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/common :: head(${voucher.id == null ? 'Thêm Voucher' : 'Sửa Voucher'})}">
+</head>
+
+<body class="bg-light">
+    <nav th:replace="~{fragments/common :: navbar}"></nav>
+
+    <div class="container mt-4" style="min-height: 70vh;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h4 class="mb-0">
+                            <i th:class="${voucher.id == null ? 'fas fa-plus-circle me-2' : 'fas fa-edit me-2'}"></i>
+                            <span th:text="${voucher.id == null ? 'Thêm Mã Giảm Giá Mới' : 'Chỉnh Sửa Voucher'}">Voucher Form</span>
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Error Alert -->
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Lỗi!</strong> <span th:text="${error}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        
+                        <!-- Success Alert -->
+                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Thành công!</strong> <span th:text="${success}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        
+                        <form th:action="@{/admin/voucher/save}" th:object="${voucher}" method="post">
+                            <input type="hidden" th:field="*{id}">
+                            <input type="hidden" th:field="*{usedCount}">
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Mã code <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" th:field="*{code}" 
+                                           th:classappend="${#fields.hasErrors('code')} ? 'is-invalid'" 
+                                           required placeholder="VD: SALE30" style="text-transform: uppercase;">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+                                    <small class="text-muted">Chỉ cho phép chữ HOA, số, gạch ngang và gạch dưới</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tiêu đề <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" th:field="*{title}" 
+                                           th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" 
+                                           required placeholder="VD: Giảm 30%">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Mô tả</label>
+                                <textarea class="form-control" th:field="*{description}" rows="2" placeholder="Mô tả chi tiết voucher"></textarea>
+                            </div>
+
+                            <h5 class="mb-3 mt-4 text-primary"><i class="fas fa-percent me-2"></i>Giá Trị Giảm Giá</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Giảm theo %</label>
+                                    <div class="input-group">
+                                        <input type="number" min="0" max="100" class="form-control" th:field="*{discountPercent}" placeholder="30">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                    <small class="text-muted">Để trống nếu giảm theo số tiền</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Hoặc giảm số tiền cố định</label>
+                                    <div class="input-group">
+                                        <input type="number" step="1000" class="form-control" th:field="*{discountAmount}" placeholder="50000">
+                                        <span class="input-group-text">đ</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 mt-4 text-primary"><i class="fas fa-sliders-h me-2"></i>Điều Kiện Áp Dụng</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Đơn hàng tối thiểu</label>
+                                    <div class="input-group">
+                                        <input type="number" step="1000" class="form-control" th:field="*{minOrderAmount}" placeholder="500000">
+                                        <span class="input-group-text">đ</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Số tiền giảm tối đa</label>
+                                    <div class="input-group">
+                                        <input type="number" step="1000" class="form-control" th:field="*{maxDiscount}" placeholder="200000">
+                                        <span class="input-group-text">đ</span>
+                                    </div>
+                                    <small class="text-muted">Áp dụng khi giảm theo %</small>
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 mt-4 text-primary"><i class="fas fa-calendar-alt me-2"></i>Thời Hạn</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Ngày bắt đầu <span class="text-danger">*</span></label>
+                                    <input type="datetime-local" class="form-control" th:field="*{startDate}" 
+                                           th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid'" 
+                                           required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Ngày kết thúc <span class="text-danger">*</span></label>
+                                    <input type="datetime-local" class="form-control" th:field="*{endDate}" 
+                                           th:classappend="${#fields.hasErrors('endDate')} ? 'is-invalid'" 
+                                           required>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold">Giới hạn lượt dùng</label>
+                                    <input type="number" min="1" class="form-control" th:field="*{usageLimit}" placeholder="Không giới hạn">
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 mt-4 text-primary"><i class="fas fa-box me-2"></i>Sản Phẩm Áp Dụng</h5>
+                            
+                            <div class="card bg-light border-0 mb-4">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Chọn sản phẩm áp dụng</label>
+                                        <select class="form-select" id="productSelector" size="10" multiple>
+                                            <option th:each="product : ${allProducts}" 
+                                                    th:value="${product.id}" 
+                                                    th:text="${product.name + ' - ' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT') + 'đ'}"
+                                                    th:selected="${voucher.applicableProductIds != null and #strings.contains(voucher.applicableProductIds, product.id.toString())}">Product</option>
+                                        </select>
+                                        <small class="text-muted d-block mt-1">
+                                            <i class="fas fa-info-circle"></i> Giữ Ctrl (Windows) hoặc Cmd (Mac) để chọn nhiều sản phẩm. Để trống = áp dụng tất cả sản phẩm
+                                        </small>
+                                        <input type="hidden" th:field="*{applicableProductIds}" id="applicableProductIdsInput">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card bg-light border-0 mb-4">
+                                <div class="card-body">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" th:field="*{active}" id="activeSwitch">
+                                        <label class="form-check-label fw-bold" for="activeSwitch">
+                                            <i class="fas fa-power-off text-success me-1"></i>Kích hoạt voucher
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a href="/admin/vouchers" class="btn btn-outline-secondary px-4">
+                                    <i class="fas fa-times me-1"></i>Hủy
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="fas fa-save me-1"></i>Lưu Voucher
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/common :: footer}"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Update hidden input when product selection changes
+        document.getElementById('productSelector').addEventListener('change', function() {
+            const selectedOptions = Array.from(this.selectedOptions);
+            const selectedIds = selectedOptions.map(option => option.value).join(',');
+            document.getElementById('applicableProductIdsInput').value = selectedIds;
+        });
+        
+        // Trigger change event on page load to sync initial selection
+        window.addEventListener('load', function() {
+            document.getElementById('productSelector').dispatchEvent(new Event('change'));
+        });
+    </script>
+</body>
+
+</html>
