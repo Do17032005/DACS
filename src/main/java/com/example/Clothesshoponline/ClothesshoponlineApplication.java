@@ -1,6 +1,4 @@
 package com.example.Clothesshoponline;
-
-import com.example.Clothesshoponline.config.DotenvConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
